@@ -1,0 +1,46 @@
+
+import React from 'react';
+
+export const Hero: React.FC = () => {
+  return (
+    <section id="hero" className="min-h-screen flex flex-col justify-center border-b border-woodblock">
+      <div className="space-y-12 relative z-10">
+        <div className="space-y-4">
+          <h2 className="text-cinnabar uppercase tracking-generous text-xl font-bold">Software Engineer</h2>
+          <h1 className="text-7xl md:text-9xl font-extrabold text-washi tracking-tighter leading-none">
+            Methuselah<span className="text-cinnabar">.</span>
+          </h1>
+        </div>
+        
+        <div className="max-w-3xl space-y-8">
+          <p className="text-3xl md:text-4xl font-light text-washi/90 italic border-l-4 border-cinnabar pl-8 leading-snug">
+            &#34;I care about how systems work, why they work, and whether they should.&#34;
+          </p>
+          
+          <div className="text-xl md:text-2xl text-washi/70 leading-relaxed space-y-4">
+            <p>
+              I’m a backend-focused software engineer who designs and builds systems with clarity, context, and long-term thinking in mind.
+            </p>
+            <p className="font-bold text-washi">
+              I prefer simple, well-reasoned solutions over clever hacks and fleeting trends.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex gap-8 pt-8">
+           <button 
+             onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+             className="px-12 py-5 bg-cinnabar text-washi font-bold tracking-generous transition-all hover:-translate-y-1 hover:shadow-[0_10px_0_0_#1d3557] cursor-pointer"
+           >
+             LET&#39;S TALK
+           </button>
+        </div>
+      </div>
+      
+      {/* Visual background Kanji for 'Clarity' or 'Structure' */}
+      <div className="absolute top-1/2 right-0 -translate-y-1/2 opacity-5 pointer-events-none text-[30rem] font-serif select-none hidden lg:block">
+        構
+      </div>
+    </section>
+  );
+};

@@ -9,9 +9,56 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "@emotion/is-prop-valid": "latest",
+    "@hookform/resolvers": "^3.9.1",
+    "@mermaid-js/mermaid-cli": "^11.12.0",
+    "@next/third-parties": "^16.0.3",
+    "@portabletext/react": "^5.0.0",
+    "@sanity/client": "^7.13.0",
+    "@sanity/image-url": "^1.2.0",
+    "autoprefixer": "^10.4.20",
+    "cheerio": "^1.1.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cmdk": "1.0.4",
+    "date-fns": "latest",
+    "embla-carousel-react": "8.5.1",
+    "framer-motion": "latest",
+    "fs": "latest",
+    "gray-matter": "latest",
+    "groq": "latest",
+    "html-entities": "^2.6.0",
+    "input-otp": "1.4.1",
+    "lucide-react": "^0.454.0",
+    "mermaid": "^11.12.1",
     "next": "16.1.4",
+    "next-sanity": "latest",
+    "next-themes": "latest",
+    "panzoom": "^9.4.3",
+    "papaparse": "^5.5.3",
+    "path": "latest",
+    "prism-react-renderer": "^2.4.1",
+    "prism-themes": "^1.9.0",
+    "prismjs": "^1.30.0",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-day-picker": "8.10.1",
+    "react-dom": "19.2.3",
+    "react-hook-form": "^7.54.1",
+    "react-markdown": "^10.1.0",
+    "react-resizable-panels": "^2.1.7",
+    "react-shiki": "^0.9.0",
+    "recharts": "2.15.0",
+    "rehype-pretty-code": "^0.14.1",
+    "remark": "latest",
+    "remark-gfm": "latest",
+    "remark-html": "latest",
+    "shiki": "^3.17.0",
+    "sonner": "^1.7.1",
+    "tailwind-merge": "^2.5.5",
+    "tailwindcss-animate": "^1.0.7",
+    "vaul": "^0.9.6",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -22,5 +69,15 @@
     "eslint-config-next": "16.1.4",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "packageManager": "pnpm@10.6.3+sha1.43e3aa4a371d889dfb0ffe7a9b5d4ca0668ccaa9",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@swc/core",
+      "esbuild",
+      "puppeteer",
+      "sharp",
+      "unrs-resolver"
+    ]
   }
 }
