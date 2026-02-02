@@ -1,7 +1,7 @@
 'use client';
 
 import React, { use } from 'react';
-import { ARTICLES } from '@/constants';
+import { ARTICLES } from '@/lib/constants';
 import { ArticleDetail } from '@/components/ArticleDetail';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';

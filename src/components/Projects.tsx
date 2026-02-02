@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
-import { PROJECTS } from '@/constants';
-import { Project } from '@/types';
+import { PROJECTS } from '@/lib/constants';
+import { Project } from '@/lib/types';
 
 interface ProjectsSectionProps {
   onSelectProject?: (project: Project) => void;

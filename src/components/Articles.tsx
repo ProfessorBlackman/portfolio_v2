@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ARTICLES } from '@/constants';
+import { ARTICLES } from '@/lib/constants';
 import Link from 'next/link';
 
 export const ArticlesSection: React.FC = () => {

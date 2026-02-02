@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { CASE_STUDIES } from '@/constants';
+import { CASE_STUDIES } from '@/lib/constants';
 
 export const CaseStudiesSection: React.FC = () => {
   const latestStudy = CASE_STUDIES[0];
@@ -24,7 +24,7 @@ export const CaseStudiesSection: React.FC = () => {
                 {latestStudy.title}
               </h4>
               <p className="text-washi/70 leading-relaxed italic line-clamp-2">
-                "{latestStudy.subtitle}"
+                &#34;{latestStudy.subtitle}&#34;
               </p>
               <div className="flex items-center gap-4 text-cinnabar font-bold uppercase tracking-generous text-xs group-hover:gap-6 transition-all">
                 VIEW CASE STUDY <span className="text-lg">→</span>

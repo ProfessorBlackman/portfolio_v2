@@ -5,7 +5,7 @@ import { CaseStudiesPage } from '@/components/CaseStudiesPage';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useRouter } from 'next/navigation';
-import { CaseStudy } from '@/types';
+import { CaseStudy } from '@/lib/types';
 
 export default function CaseStudies() {
   const router = useRouter();

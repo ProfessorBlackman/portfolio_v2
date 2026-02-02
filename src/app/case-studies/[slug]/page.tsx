@@ -1,7 +1,7 @@
 'use client';
 
 import React, { use } from 'react';
-import { CASE_STUDIES } from '@/constants';
+import { CASE_STUDIES } from '@/lib/constants';
 import { CaseStudyDetail } from '@/components/CaseStudyDetail';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';

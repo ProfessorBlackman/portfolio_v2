@@ -1,7 +1,7 @@
 
 import React, { useState, useMemo } from 'react';
-import { ARTICLES } from '@/constants';
-import { Article } from '@/types';
+import { ARTICLES } from '@/lib/constants';
+import { Article } from '@/lib/types';
 
 interface ArticlesPageProps {
   onSelectArticle: (article: Article) => void;

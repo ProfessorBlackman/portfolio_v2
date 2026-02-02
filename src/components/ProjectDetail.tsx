@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import { Project } from '@/types';
+import { Project } from '@/lib/types';
 
 interface ProjectDetailProps {
   project: Project;

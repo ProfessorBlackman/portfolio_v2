@@ -5,7 +5,7 @@ import { ArticlesPage } from '@/components/ArticlesPage';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useRouter } from 'next/navigation';
-import { Article } from '@/types';
+import { Article } from '@/lib/types';
 
 export default function Articles() {
   const router = useRouter();

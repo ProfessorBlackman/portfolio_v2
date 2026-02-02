@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import { CaseStudy } from '@/types';
+import { CaseStudy } from '@/lib/types';
 import { Interactions } from './Interactions';
 
 interface CaseStudyDetailProps {

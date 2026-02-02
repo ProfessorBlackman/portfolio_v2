@@ -1,7 +1,7 @@
 
 import React, { useState, useMemo } from 'react';
-import { CASE_STUDIES } from '@/constants';
-import { CaseStudy } from '@/types';
+import { CASE_STUDIES } from '@/lib/constants';
+import { CaseStudy } from '@/lib/types';
 
 interface CaseStudiesPageProps {
   onSelectCaseStudy: (study: CaseStudy) => void;

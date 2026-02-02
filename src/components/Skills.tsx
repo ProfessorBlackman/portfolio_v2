@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { SKILLS } from '@/constants';
+import { SKILLS } from '@/lib/constants';
 
 export const SkillsSection: React.FC = () => {
   // Group skills by their type

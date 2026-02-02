@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import { Article } from '@/types';
+import { Article } from '@/lib/types';
 import { Interactions } from './Interactions';
 
 interface ArticleDetailProps {
