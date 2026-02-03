@@ -1,5 +1,6 @@
 
 import React, { useState, useMemo } from 'react';
+import Image from 'next/image';
 import { CaseStudy } from '@/lib/types';
 
 interface CaseStudiesPageProps {
@@ -52,12 +53,14 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ caseStudies, o
               onClick={() => onSelectCaseStudy(cs)}
             >
               <div className="md:col-span-4 relative overflow-hidden h-48 md:h-auto">
-                <img 
+                <Image 
                   src={cs.coverImage} 
                   alt={cs.title} 
-                  className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 scale-105 group-hover:scale-100"
+                  fill
+                  className="object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 scale-105 group-hover:scale-100"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 33vw, 25vw"
                 />
-                <div className="absolute inset-0 bg-sumi/20 group-hover:bg-transparent transition-colors"></div>
+                <div className="absolute inset-0 bg-sumi/20 group-hover:bg-transparent transition-colors z-10"></div>
               </div>
               <div className="md:col-span-8 p-8 space-y-6 flex flex-col justify-center">
                 <div className="space-y-2">

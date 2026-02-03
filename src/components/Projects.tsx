@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { Project } from '@/lib/types';
 
 interface ProjectsSectionProps {
@@ -49,12 +50,14 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects, onSe
             onClick={() => onSelectProject?.(project)}
           >
             <div className="aspect-video relative overflow-hidden">
-              <img 
+              <Image 
                 src={project.image} 
                 alt={project.title} 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale hover:grayscale-0 opacity-80"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110 grayscale hover:grayscale-0 opacity-80"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
-              <div className={`absolute top-4 right-4 text-[10px] font-bold px-2 py-1 tracking-widest uppercase ${
+              <div className={`absolute top-4 right-4 z-10 text-[10px] font-bold px-2 py-1 tracking-widest uppercase ${
                 project.status === 'Completed' ? 'bg-indigo text-washi' : 'bg-cinnabar text-washi animate-pulse'
               }`}>
                 {project.status}

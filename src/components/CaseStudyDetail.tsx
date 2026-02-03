@@ -1,5 +1,6 @@
 
 import React, { useEffect } from 'react';
+import Image from 'next/image';
 import { CaseStudy } from '@/lib/types';
 import { Interactions } from './Interactions';
 import { PortableText } from 'next-sanity';
@@ -77,7 +78,13 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
 
       {/* Hero Image */}
       <div className="h-[60vh] relative overflow-hidden border-y border-woodblock">
-        <img src={study.coverImage} className="w-full h-full object-cover grayscale opacity-60" />
+        <Image 
+          src={study.coverImage} 
+          fill 
+          className="object-cover grayscale opacity-60" 
+          alt={study.title}
+          priority
+        />
         <div className="absolute inset-0 flex items-center justify-center p-12">
            <div className="bg-sumi/80 backdrop-blur p-12 max-w-2xl border-l-8 border-cinnabar">
              <h3 className="text-xs uppercase tracking-generous text-cinnabar font-bold mb-4">Overview</h3>
@@ -119,7 +126,14 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
             {study.media.map((item, i) => (
               <figure key={i} className="space-y-4 border border-woodblock p-4 bg-woodblock/5">
                 {item._type === 'image' ? (
-                  <img src={item.url} className="w-full grayscale hover:grayscale-0 transition-all duration-700" alt={item.caption} />
+                  <div className="relative aspect-video">
+                    <Image 
+                      src={item.url} 
+                      fill 
+                      className="grayscale hover:grayscale-0 transition-all duration-700 object-cover" 
+                      alt={item.caption || study.title} 
+                    />
+                  </div>
                 ) : (
                   <video src={item.url} controls className="w-full" />
                 )}

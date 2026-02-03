@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react';
+import Image from 'next/image';
 import { Project } from '@/lib/types';
-import Image from "next/image";
 
 interface ProjectDetailProps {
   project: Project;
@@ -38,7 +38,14 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack })
           </div>
 
           <div className="aspect-video relative overflow-hidden border-2 border-woodblock shadow-2xl">
-            <img src={project.image || ""} alt={project.title} className="w-full h-full object-cover" />
+            <Image 
+              src={project.image || ""} 
+              alt={project.title} 
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 58vw"
+              priority
+            />
           </div>
 
           <div className="space-y-8">
@@ -54,13 +61,16 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack })
               <h3 className="text-2xl font-black text-washi tracking-tighter uppercase">Media Gallery</h3>
               <div className="grid grid-cols-1 gap-12">
                 {project.media.map((item, idx) => (
+
                   <figure key={idx} className="space-y-4 group">
-                    <div className="overflow-hidden border border-woodblock/50 bg-woodblock/20">
-                      {item._type === 'image' ? (
-                        <img
+                    <div className="overflow-hidden border border-woodblock/50 bg-woodblock/20 relative aspect-video">
+                      {item.type === 'image' ? (
+                        <Image
                           src={item.url} 
                           alt={item.caption || project.title} 
-                          className="w-full grayscale group-hover:grayscale-0 transition-all duration-700"
+                          fill
+                          className="grayscale group-hover:grayscale-0 transition-all duration-700 object-cover"
+                          sizes="(max-width: 1024px) 100vw, 58vw"
                         />
                       ) : (
                         <video src={item.url} controls className="w-full" />
@@ -68,7 +78,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack })
                     </div>
                     {item.caption && (
                       <figcaption className="text-xs uppercase tracking-generous text-washi/30 font-bold text-center">
-                        // {item.caption}
+                        {item.caption}
                       </figcaption>
                     )}
                   </figure>
@@ -107,7 +117,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack })
                    href={project.liveUrl} 
                    target="_blank" 
                    rel="noopener noreferrer"
-                   className="block text-center py-4 bg-cinnabar text-washi font-bold uppercase tracking-generous text-[10px] hover:translate-y-[-2px] transition-all"
+                   className="block text-center py-4 bg-cinnabar text-washi font-bold uppercase tracking-generous text-[10px] hover:-translate-y-0.5 transition-all"
                  >
                    LIVE DEMO
                  </a>

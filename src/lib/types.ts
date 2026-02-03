@@ -9,7 +9,7 @@ export interface CsvTableData {
 }
 
 export interface ProjectMedia {
-  _type: 'image' | 'video';
+  type: 'image' | 'video';
   url: string;
   caption?: string;
 }

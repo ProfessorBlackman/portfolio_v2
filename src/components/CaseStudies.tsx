@@ -1,6 +1,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { CASE_STUDIES } from '@/lib/constants';
 
 export const CaseStudiesSection: React.FC = () => {
@@ -30,13 +31,15 @@ export const CaseStudiesSection: React.FC = () => {
                 VIEW CASE STUDY <span className="text-lg">→</span>
               </div>
             </div>
-            <div className="h-64 lg:h-auto bg-woodblock relative">
-              <img 
+            <div className="h-64 lg:h-auto bg-woodblock relative overflow-hidden">
+              <Image 
                 src={latestStudy.coverImage} 
                 alt={latestStudy.title} 
-                className="w-full h-full object-cover opacity-60 grayscale brightness-75 transition-all duration-700 group-hover:scale-105"
+                fill
+                className="object-cover opacity-60 grayscale brightness-75 transition-all duration-700 group-hover:scale-105"
+                sizes="(max-width: 1024px) 100vw, 50vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-sumi to-transparent lg:hidden"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-sumi to-transparent lg:hidden z-10"></div>
             </div>
           </div>
         </Link>
