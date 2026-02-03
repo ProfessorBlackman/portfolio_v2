@@ -237,7 +237,8 @@ export class SanityService {
       startDate,
       endDate,
       type,
-      description
+      description,
+      certificateUrl
     }`);
   }
 }

@@ -1,35 +1,37 @@
 
 import React, { useState, useMemo } from 'react';
-import { ARTICLES } from '@/lib/constants';
 import { Article } from '@/lib/types';
 
 interface ArticlesPageProps {
+  articles?: Article[];
   onSelectArticle: (article: Article) => void;
 }
 
-export const ArticlesPage: React.FC<ArticlesPageProps> = ({ onSelectArticle }) => {
+export const ArticlesPage: React.FC<ArticlesPageProps> = ({ articles, onSelectArticle }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
-  const categories = useMemo(() => ['All', ...Array.from(new Set(ARTICLES.map(a => a.category)))], []);
+  const displayArticles = articles && articles.length > 0 ? articles : [];
+
+  const categories = useMemo(() => ['All', ...Array.from(new Set(displayArticles.map(a => a.category).filter(Boolean) as string[]))], [displayArticles]);
   const allTags = useMemo(() => {
     const tags = new Set<string>();
-    ARTICLES.forEach(a => a.tags.forEach(t => tags.add(t)));
+    displayArticles.forEach(a => a.tags?.forEach(t => tags.add(t)));
     return Array.from(tags);
-  }, []);
+  }, [displayArticles]);
 
-  const popularPosts = useMemo(() => ARTICLES.slice(0, 3), []);
+  const popularPosts = useMemo(() => displayArticles.slice(0, 3), [displayArticles]);
 
   const filteredArticles = useMemo(() => {
-    return ARTICLES.filter(article => {
+    return displayArticles.filter(article => {
       const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            article.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+                            (article.excerpt?.toLowerCase().includes(searchQuery.toLowerCase()) || false);
       const matchesCategory = activeCategory === 'All' || article.category === activeCategory;
-      const matchesTag = !activeTag || article.tags.includes(activeTag);
+      const matchesTag = !activeTag || article.tags?.includes(activeTag);
       return matchesSearch && matchesCategory && matchesTag;
     });
-  }, [searchQuery, activeCategory, activeTag]);
+  }, [displayArticles, searchQuery, activeCategory, activeTag]);
 
   return (
     <div className="py-32 space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -44,7 +46,7 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({ onSelectArticle }) =
         <div className="lg:col-span-8 space-y-8">
           {filteredArticles.length > 0 ? filteredArticles.map((article) => (
             <article 
-              key={article.id} 
+              key={article._id}
               className="group cursor-pointer space-y-6 bg-woodblock/10 p-10 border border-woodblock/20 hover:border-cinnabar transition-all hover:bg-woodblock/20 rounded-md"
               onClick={() => onSelectArticle(article)}
             >
@@ -53,7 +55,7 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({ onSelectArticle }) =
                   {article.category}
                 </span>
                 <span className="text-washi/40 flex items-center gap-2">
-                   📅 {article.date}
+                   📅 {article.publishedAt}
                 </span>
               </div>
               
@@ -66,7 +68,7 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({ onSelectArticle }) =
               </p>
               
               <div className="flex flex-wrap gap-3">
-                {article.tags.map(tag => (
+                {article.tags?.map(tag => (
                   <span 
                     key={tag} 
                     className={`text-[11px] uppercase tracking-widest font-bold px-3 py-1 rounded-md border transition-colors ${
@@ -150,8 +152,8 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({ onSelectArticle }) =
             <h4 className="text-lg font-bold text-washi tracking-widest uppercase border-b border-woodblock/20 pb-4">Popular Posts</h4>
             <div className="space-y-6">
               {popularPosts.map((post, idx) => (
-                <div key={post.id} className="flex gap-4 group cursor-pointer" onClick={() => onSelectArticle(post)}>
-                  <span className="flex-shrink-0 w-6 h-6 bg-woodblock/40 text-washi/40 flex items-center justify-center text-[10px] font-bold rounded-full border border-woodblock/20">
+                <div key={post._id} className="flex gap-4 group cursor-pointer" onClick={() => onSelectArticle(post)}>
+                  <span className="shrink-0 w-6 h-6 bg-woodblock/40 text-washi/40 flex items-center justify-center text-[10px] font-bold rounded-full border border-woodblock/20">
                     {idx + 1}
                   </span>
                   <div className="space-y-1">

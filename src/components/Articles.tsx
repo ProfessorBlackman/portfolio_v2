@@ -15,11 +15,11 @@ export const ArticlesSection: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         {ARTICLES.slice(0, 4).map((article) => (
-          <Link href={`/articles/${article.id}`} key={article.id} className="space-y-4 group block">
+          <Link href={`/articles/${article._id}`} key={article._id} className="space-y-4 group block">
             <div className="flex items-center gap-4 text-[10px] text-washi/40 uppercase tracking-widest">
               <span className="text-cinnabar font-bold">{article.category}</span>
               <span className="w-1 h-1 bg-woodblock rounded-full"></span>
-              <span>{article.date}</span>
+              <span>{article.publishedAt}</span>
             </div>
             <h4 className="text-2xl font-bold text-washi leading-snug group-hover:text-cinnabar transition-colors cursor-pointer">
               {article.title}
@@ -28,7 +28,7 @@ export const ArticlesSection: React.FC = () => {
               {article.excerpt}
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
-              {article.tags.map(tag => (
+              {(article.tags || []).map(tag => (
                 <span key={tag} className="text-[10px] text-washi/30 bg-woodblock/20 px-2 py-0.5 border border-woodblock/30">
                   {tag}
                 </span>

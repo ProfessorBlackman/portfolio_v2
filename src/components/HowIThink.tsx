@@ -1,8 +1,13 @@
 
 import React from 'react';
+import { Profile } from '@/lib/types';
 
-export const HowIThink: React.FC = () => {
-  const principles = [
+interface HowIThinkProps {
+  profile?: Profile | null;
+}
+
+export const HowIThink: React.FC<HowIThinkProps> = ({ profile }) => {
+  const principles = profile?.thoughtProcess || [
     "I optimize for clarity before cleverness",
     "I question requirements before implementing them",
     "I prefer boring, proven technology used well",

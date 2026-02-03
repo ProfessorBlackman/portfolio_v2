@@ -19,13 +19,11 @@ export interface Project {
   id?: string;
   title: string;
   description?: string;
-  fullDescription?: string;
+  details?: string;
   image?: string;
   tags?: string[];
   githubUrl?: string;
-  githubLink?: string;
   liveUrl?: string;
-  liveLink?: string;
   features?: string[];
   techStack?: {
     frontend?: string[];
@@ -33,9 +31,7 @@ export interface Project {
     database?: string[];
     others?: string[];
   };
-  technologies?: string[];
   status?: 'Completed' | 'In Progress' | 'Planned';
-  statusOld?: 'Completed' | 'In Progress' | 'Planned';
   architecture?: string;
   category?: string;
   media?: ProjectMedia[];
@@ -43,44 +39,36 @@ export interface Project {
 
 export interface Experience {
   _id: string;
-  title: string;
-  role?: string;
+  role: string;
   company: string;
   location?: string;
   startDate: string;
   endDate?: string;
   isCurrent: boolean;
-  period?: string;
   achievements?: string[];
   description?: string[];
 }
 
 export interface Article {
   _id: string;
-  id?: string;
   title: string;
   slug: string;
   publishedAt: string;
-  date?: string;
   image?: string;
-  body?: any[]; // Portable Text
-  content?: any; // For Portable Text
-  excerpt?: string;
+  body: any[]; // Portable Text
+  excerpt: string;
   tags?: string[];
   category?: string;
   duration?: string;
-  dateCreated?: string;
   references?: { title: string; author: string; link?: string; year: string }[];
 }
 
 export interface Skill {
   _id: string;
   name: string;
-  category?: 'languages' | 'frameworks' | 'databases' | 'cloud' | 'cicd' | 'monitoring' | 'tools' | 'backend' | 'security' | 'interests';
+  category?: 'languages' | 'frameworks' | 'databases' | 'cloud' | 'ci/cd' | 'monitoring' | 'tools' | 'backend' | 'security' | 'interests' | 'other' | 'mobile';
   proficiency?: number;
-  level?: number; // 0-100
   icon?: string;
-  type?: string;
 }
 
 export interface CaseStudyMedia {
@@ -149,5 +137,6 @@ export interface Education {
   startDate?: string;
   endDate?: string;
   type: 'education' | 'certification';
+  certificateUrl?: string;
   description?: string;
 }

@@ -1,6 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { Project } from '@/lib/types';
+import Image from "next/image";
 
 interface ProjectDetailProps {
   project: Project;
@@ -26,7 +27,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack })
           <div className="space-y-6">
             <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-cinnabar">
               <span>{project.category}</span>
-              <span className="w-8 h-[1px] bg-woodblock"></span>
+              <span className="w-8 h-px bg-woodblock"></span>
               <span className={`px-2 py-0.5 ${project.status === 'Completed' ? 'bg-indigo/20 text-indigo-300' : 'bg-cinnabar/20 text-cinnabar'}`}>
                 {project.status}
               </span>
@@ -37,13 +38,13 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack })
           </div>
 
           <div className="aspect-video relative overflow-hidden border-2 border-woodblock shadow-2xl">
-            <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+            <img src={project.image || ""} alt={project.title} className="w-full h-full object-cover" />
           </div>
 
           <div className="space-y-8">
             <h2 className="text-xs uppercase tracking-generous text-cinnabar font-bold">About the project</h2>
             <div className="text-2xl md:text-3xl text-washi/80 font-light leading-relaxed whitespace-pre-line">
-              {project.fullDescription || project.description}
+              {project.details || project.description}
             </div>
           </div>
 
@@ -56,7 +57,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack })
                   <figure key={idx} className="space-y-4 group">
                     <div className="overflow-hidden border border-woodblock/50 bg-woodblock/20">
                       {item._type === 'image' ? (
-                        <img 
+                        <img
                           src={item.url} 
                           alt={item.caption || project.title} 
                           className="w-full grayscale group-hover:grayscale-0 transition-all duration-700"
@@ -82,7 +83,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack })
             <div className="space-y-4">
               <h3 className="text-xs uppercase tracking-generous text-washi/30 font-bold">Technologies</h3>
               <div className="flex flex-wrap gap-2">
-                {(project.technologies || project.tags).map(tech => (
+                {(project.tags || []).map(tech => (
                   <span key={tech} className="px-4 py-2 bg-sumi border border-woodblock/40 text-sm font-bold text-washi/70 tracking-widest">
                     {tech}
                   </span>
@@ -91,9 +92,9 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack })
             </div>
 
             <div className="grid grid-cols-2 gap-8">
-               {project.githubLink && (
+               {project.githubUrl && (
                  <a 
-                   href={project.githubLink} 
+                   href={project.githubUrl} 
                    target="_blank" 
                    rel="noopener noreferrer"
                    className="block text-center py-4 border border-cinnabar text-cinnabar font-bold uppercase tracking-generous text-[10px] hover:bg-cinnabar hover:text-washi transition-all"
@@ -101,9 +102,9 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack })
                    GITHUB
                  </a>
                )}
-               {project.liveLink && (
+               {project.liveUrl && (
                  <a 
-                   href={project.liveLink} 
+                   href={project.liveUrl} 
                    target="_blank" 
                    rel="noopener noreferrer"
                    className="block text-center py-4 bg-cinnabar text-washi font-bold uppercase tracking-generous text-[10px] hover:translate-y-[-2px] transition-all"

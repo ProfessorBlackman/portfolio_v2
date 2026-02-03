@@ -1,29 +1,36 @@
 
 import React from 'react';
+import { Profile } from '@/lib/types';
 
-export const Hero: React.FC = () => {
+interface HeroProps {
+  profile?: Profile | null;
+}
+
+export const Hero: React.FC<HeroProps> = ({ profile }) => {
   return (
     <section id="hero" className="min-h-screen flex flex-col justify-center border-b border-woodblock">
       <div className="space-y-12 relative z-10">
         <div className="space-y-4">
-          <h2 className="text-cinnabar uppercase tracking-generous text-xl font-bold">Software Engineer</h2>
+          <h2 className="text-cinnabar uppercase tracking-generous text-xl font-bold">{profile?.profession || 'Software Engineer'}</h2>
           <h1 className="text-7xl md:text-9xl font-extrabold text-washi tracking-tighter leading-none">
-            Methuselah<span className="text-cinnabar">.</span>
+            {profile?.name.split(' ')[0] || 'Methuselah'}<span className="text-cinnabar">.</span>
           </h1>
         </div>
         
         <div className="max-w-3xl space-y-8">
           <p className="text-3xl md:text-4xl font-light text-washi/90 italic border-l-4 border-cinnabar pl-8 leading-snug">
-            &#34;I care about how systems work, why they work, and whether they should.&#34;
+            &#34;{profile?.headline || 'I care about how systems work, why they work, and whether they should.'}&#34;
           </p>
           
           <div className="text-xl md:text-2xl text-washi/70 leading-relaxed space-y-4">
             <p>
-              I’m a backend-focused software engineer who designs and builds systems with clarity, context, and long-term thinking in mind.
+              {profile?.subtitle || 'I’m a backend-focused software engineer who designs and builds systems with clarity, context, and long-term thinking in mind.'}
             </p>
-            <p className="font-bold text-washi">
-              I prefer simple, well-reasoned solutions over clever hacks and fleeting trends.
-            </p>
+            {profile?.shortBio && (
+              <p className="font-bold text-washi">
+                {profile.shortBio}
+              </p>
+            )}
           </div>
         </div>
 

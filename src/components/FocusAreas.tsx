@@ -1,8 +1,13 @@
 
 import React from 'react';
+import { Profile } from '@/lib/types';
 
-export const FocusAreas: React.FC = () => {
-  const areas = [
+interface FocusAreasProps {
+  profile?: Profile | null;
+}
+
+export const FocusAreas: React.FC<FocusAreasProps> = ({ profile }) => {
+  const areas = profile?.focusAreas || [
     {
       title: "Backend systems & APIs",
       desc: "Designing services that are secure, maintainable, and explicit about their responsibilities."
@@ -28,7 +33,7 @@ export const FocusAreas: React.FC = () => {
           WHAT I <span className="text-cinnabar">WORK ON</span>
         </h3>
         <p className="text-washi/40 text-xl max-w-sm italic">
-          "Problems that require careful thinking rather than brute force execution."
+          &#34;Problems that require careful thinking rather than brute force execution.&#34;
         </p>
       </div>
 
@@ -44,7 +49,7 @@ export const FocusAreas: React.FC = () => {
       <div className="bg-cinnabar p-12 flex flex-col md:flex-row justify-between items-center gap-8">
         <h4 className="text-4xl font-extrabold text-washi tracking-tighter">WHAT I VALUE</h4>
         <p className="text-2xl text-washi/90 max-w-2xl leading-tight">
-          "I’m more interested in building useful, understandable software than chasing trends, titles, or hype. I prefer depth over noise."
+          &#34;I’m more interested in building useful, understandable software than chasing trends, titles, or hype. I prefer depth over noise.&#34;
         </p>
       </div>
     </section>

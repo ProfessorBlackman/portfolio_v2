@@ -7,10 +7,10 @@ export const ContactSection: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
         <div className="lg:col-span-5 space-y-8">
           <h3 className="text-6xl font-black tracking-tighter text-washi leading-none">
-            LET'S <br /><span className="text-cinnabar underline">TALK</span>
+            LET&#39;S <br /><span className="text-cinnabar underline">TALK</span>
           </h3>
           <p className="text-2xl text-washi/70 leading-relaxed">
-            If you're interested in thoughtful system design, practical software for real constraints, or collaborating on something that needs careful thinking—I'd love to hear from you.
+            If you&#39;re interested in thoughtful system design, practical software for real constraints, or collaborating on something that needs careful thinking, I&#39;d love to hear from you.
           </p>
           
           <div className="space-y-6 pt-12">

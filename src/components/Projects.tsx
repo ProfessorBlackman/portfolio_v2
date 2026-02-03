@@ -1,19 +1,21 @@
 
 import React, { useState } from 'react';
-import { PROJECTS } from '@/lib/constants';
 import { Project } from '@/lib/types';
 
 interface ProjectsSectionProps {
+  projects?: Project[];
   onSelectProject?: (project: Project) => void;
 }
 
-export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onSelectProject }) => {
+export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects, onSelectProject }) => {
   const [filter, setFilter] = useState('All');
-  const categories = ['All', ...new Set(PROJECTS.map(p => p.category))];
+  
+  const displayProjects = projects && projects.length > 0 ? projects : [];
+  const categories = ['All', ...new Set(displayProjects.map(p => p.category).filter(Boolean) as string[])];
 
   const filteredProjects = filter === 'All' 
-    ? PROJECTS 
-    : PROJECTS.filter(p => p.category === filter);
+    ? displayProjects 
+    : displayProjects.filter(p => p.category === filter);
 
   return (
     <section id="projects" className="space-y-12">
@@ -58,13 +60,13 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onSelectProjec
                 {project.status}
               </div>
             </div>
-            <div className="p-6 flex-grow space-y-4">
+            <div className="p-6 grow space-y-4">
               <h4 className="text-xl font-bold text-washi group-hover:text-cinnabar transition-colors">{project.title}</h4>
               <p className="text-washi/60 text-sm leading-relaxed line-clamp-2">
                 {project.description}
               </p>
               <div className="flex flex-wrap gap-2 pt-2">
-                {project.tags.map(tag => (
+                {project.tags?.map(tag => (
                   <span key={tag} className="text-[10px] text-washi/40 border border-woodblock px-2 py-0.5 tracking-wider">
                     #{tag}
                   </span>

@@ -1,31 +1,35 @@
 
 import React, { useState, useMemo } from 'react';
-import { CASE_STUDIES } from '@/lib/constants';
 import { CaseStudy } from '@/lib/types';
 
 interface CaseStudiesPageProps {
+  caseStudies?: CaseStudy[];
   onSelectCaseStudy: (study: CaseStudy) => void;
 }
 
-export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ onSelectCaseStudy }) => {
+export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ caseStudies, onSelectCaseStudy }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
+  const displayCaseStudies = useMemo(() => {
+    return caseStudies && caseStudies.length > 0 ? caseStudies : [];
+  }, [caseStudies]);
+
   const allTags = useMemo(() => {
     const tags = new Set<string>();
-    CASE_STUDIES.forEach(cs => cs.tags.forEach(t => tags.add(t)));
+    displayCaseStudies.forEach(cs => cs.tags?.forEach(t => tags.add(t)));
     return Array.from(tags);
-  }, []);
+  }, [displayCaseStudies]);
 
   const filteredStudies = useMemo(() => {
-    return CASE_STUDIES.filter(cs => {
+    return displayCaseStudies.filter(cs => {
       const matchesSearch = cs.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            cs.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            cs.overview.some(p => p.toLowerCase().includes(searchQuery.toLowerCase()));
-      const matchesTag = !activeTag || cs.tags.includes(activeTag);
+                            (cs.subtitle?.toLowerCase().includes(searchQuery.toLowerCase()) || false) ||
+                            (Array.isArray(cs.overview) ? cs.overview.some(p => typeof p === 'string' && p.toLowerCase().includes(searchQuery.toLowerCase())) : typeof cs.overview === 'string' && (cs.overview as string).toLowerCase().includes(searchQuery.toLowerCase()));
+      const matchesTag = !activeTag || cs.tags?.includes(activeTag);
       return matchesSearch && matchesTag;
     });
-  }, [searchQuery, activeTag]);
+  }, [displayCaseStudies, searchQuery, activeTag]);
 
   return (
     <div className="py-32 space-y-16 animate-in fade-in duration-700">
@@ -67,10 +71,10 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ onSelectCaseSt
                   </h3>
                 </div>
                 <p className="text-sm text-washi/50 leading-relaxed line-clamp-2">
-                  {cs.overview[0]}
+                  {Array.isArray(cs.overview) ? cs.overview[0] : cs.overview}
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {cs.tags.map(tag => (
+                  {cs.tags?.map(tag => (
                     <span key={tag} className="text-[9px] uppercase tracking-widest text-washi/30 font-bold border border-woodblock px-2 py-0.5">#{tag}</span>
                   ))}
                 </div>

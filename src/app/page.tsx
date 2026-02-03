@@ -12,10 +12,36 @@ import { ProjectsSection } from '@/components/Projects';
 import { ContactSection } from '@/components/Contact';
 import { Footer } from '@/components/Footer';
 import { useRouter } from 'next/navigation';
+import { sanityService } from '@/lib/sanity/lib/service';
+import { Profile, Experience, Skill, Project } from '@/lib/types';
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState('about');
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [experiences, setExperiences] = useState<Experience[]>([]);
+  const [skills, setSkills] = useState<Skill[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [profileData, experiencesData, skillsData, projectsData] = await Promise.all([
+          sanityService.getProfile(),
+          sanityService.getExperiences(),
+          sanityService.getSkills(),
+          sanityService.getProjects(),
+        ]);
+        setProfile(profileData);
+        setExperiences(experiencesData);
+        setSkills(skillsData);
+        setProjects(projectsData);
+      } catch (error) {
+        console.error('Error fetching data from Sanity:', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,7 +63,7 @@ export default function Home() {
   }, []);
 
   const handleSelectProject = (project: any) => {
-    router.push(`/projects/${project.id}`);
+    router.push(`/projects/${project._id}`);
   };
 
   return (
@@ -45,13 +71,13 @@ export default function Home() {
       <Header activeSection={activeSection} />
       <main className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 space-y-12">
         <div className="animate-in fade-in duration-700">
-          <Hero />
-          <About />
-          <HowIThink />
-          <FocusAreas />
-          <ExperienceSection />
-          <SkillsSection />
-          <ProjectsSection onSelectProject={handleSelectProject} />
+          <Hero profile={profile} />
+          <About profile={profile} />
+          <HowIThink profile={profile} />
+          <FocusAreas profile={profile} />
+          <ExperienceSection experiences={experiences} />
+          <SkillsSection skills={skills} />
+          <ProjectsSection projects={projects} onSelectProject={handleSelectProject} />
           <ContactSection />
         </div>
       </main>

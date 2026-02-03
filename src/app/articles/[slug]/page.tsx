@@ -1,19 +1,53 @@
 'use client';
 
-import React, { use } from 'react';
-import { ARTICLES } from '@/lib/constants';
+import React, { use, useState, useEffect } from 'react';
 import { ArticleDetail } from '@/components/ArticleDetail';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { useRouter, notFound } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { sanityService } from '@/lib/sanity/lib/service';
+import { Article } from '@/lib/types';
 
 export default function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
+  const [article, setArticle] = useState<Article | null>(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const article = ARTICLES.find((a) => a.id === slug);
+
+  useEffect(() => {
+    const fetchArticle = async () => {
+      try {
+        const data = await sanityService.getArticleBySlug(slug);
+        setArticle(data);
+      } catch (error) {
+        console.error('Error fetching article:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchArticle();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen pattern-bg flex items-center justify-center">
+        <div className="text-cinnabar text-2xl font-bold animate-pulse">LOADING...</div>
+      </div>
+    );
+  }
 
   if (!article) {
-    notFound();
+    return (
+      <div className="min-h-screen pattern-bg flex flex-col items-center justify-center space-y-8">
+        <h1 className="text-4xl font-bold text-washi">Article not found</h1>
+        <button 
+          onClick={() => router.push('/articles')}
+          className="px-8 py-3 bg-cinnabar text-washi font-bold"
+        >
+          BACK TO ARTICLES
+        </button>
+      </div>
+    );
   }
 
   return (
