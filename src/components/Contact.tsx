@@ -1,7 +1,49 @@
 
-import React from 'react';
+'use client';
+
+import React, { useRef, useState } from 'react';
+import emailjs from '@emailjs/browser';
 
 export const ContactSection: React.FC = () => {
+  const form = useRef<HTMLFormElement>(null);
+  const [isSending, setIsSending] = useState(false);
+  const [status, setStatus] = useState<{
+    type: 'success' | 'error' | null;
+    message: string;
+  }>({ type: null, message: '' });
+
+  const sendEmail = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!form.current) return;
+
+    setIsSending(true);
+    setStatus({ type: null, message: '' });
+
+    try {
+      await emailjs.sendForm(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '',
+        form.current,
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
+      );
+
+      setStatus({
+        type: 'success',
+        message: 'Message sent successfully! I will get back to you soon.',
+      });
+      form.current.reset();
+    } catch (error) {
+      console.error('EmailJS Error:', error);
+      setStatus({
+        type: 'error',
+        message: 'Failed to send message. Please try again later.',
+      });
+    } finally {
+      setIsSending(false);
+    }
+  };
+
   return (
     <section id="contact" className="space-y-16">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
@@ -30,12 +72,14 @@ export const ContactSection: React.FC = () => {
         </div>
 
         <div className="lg:col-span-7 bg-woodblock/20 p-8 md:p-16 border-r-8 border-cinnabar">
-          <form className="space-y-10" onSubmit={(e) => e.preventDefault()}>
+          <form ref={form} className="space-y-10" onSubmit={sendEmail}>
             <div className="space-y-12">
               <div className="relative">
                 <input 
                   type="text" 
+                  name="user_name"
                   id="name"
+                  required
                   placeholder=" "
                   className="peer w-full bg-transparent border-b-2 border-woodblock py-4 text-2xl focus:border-cinnabar outline-none transition-all"
                 />
@@ -45,7 +89,9 @@ export const ContactSection: React.FC = () => {
               <div className="relative">
                 <input 
                   type="email" 
+                  name="user_email"
                   id="email"
+                  required
                   placeholder=" "
                   className="peer w-full bg-transparent border-b-2 border-woodblock py-4 text-2xl focus:border-cinnabar outline-none transition-all"
                 />
@@ -54,7 +100,9 @@ export const ContactSection: React.FC = () => {
 
               <div className="relative">
                 <textarea 
+                  name="message"
                   id="message"
+                  required
                   placeholder=" "
                   rows={3}
                   className="peer w-full bg-transparent border-b-2 border-woodblock py-4 text-2xl focus:border-cinnabar outline-none transition-all resize-none"
@@ -63,9 +111,21 @@ export const ContactSection: React.FC = () => {
               </div>
             </div>
             
-            <button className="group flex items-center gap-8 text-cinnabar font-bold uppercase tracking-generous text-xl hover:gap-12 transition-all">
-              SEND MESSAGE <span className="text-4xl">→</span>
-            </button>
+            <div className="space-y-4">
+              <button 
+                type="submit"
+                disabled={isSending}
+                className="group flex items-center gap-8 text-cinnabar font-bold uppercase tracking-generous text-xl hover:gap-12 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSending ? 'SENDING...' : 'SEND MESSAGE'} <span className="text-4xl">→</span>
+              </button>
+
+              {status.type && (
+                <p className={`text-sm font-bold uppercase tracking-wider ${status.type === 'success' ? 'text-green-500' : 'text-cinnabar'}`}>
+                  {status.message}
+                </p>
+              )}
+            </div>
           </form>
         </div>
       </div>
