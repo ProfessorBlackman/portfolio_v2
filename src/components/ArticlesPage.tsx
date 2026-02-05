@@ -170,7 +170,7 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({ articles, onSelectAr
           <div className="bg-woodblock/70 p-8 border border-woodblock/70 rounded-md space-y-6">
             <h4 className="text-lg font-bold text-washi tracking-widest uppercase border-b border-woodblock/20 pb-4">About</h4>
             <p className="text-sm text-washi/50 leading-relaxed">
-              Welcome to my corner of the internet where I write about whatever catches my eye in the world of software development, from backend adventures and microservices mishaps to AI experiments and the occasional deep dive into something weird but wonderful. If it's interesting, useful, or just plain cool, you'll probably find me writing about it here. Stick around, you might just learn something new (or at least leave with a few tabs open).
+              Welcome to my corner of the internet where I write about whatever catches my eye in the world of software development, from backend adventures and microservices mishaps to AI experiments and the occasional deep dive into something weird but wonderful. If it&#39;s interesting, useful, or just plain cool, you&#39;ll probably find me writing about it here. Stick around, you might just learn something new (or at least leave with a few tabs open).
             </p>
           </div>
         </div>
