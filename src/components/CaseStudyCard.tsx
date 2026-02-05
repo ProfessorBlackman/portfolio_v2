@@ -12,7 +12,7 @@ interface CaseStudyCardProps {
 export const CaseStudyCard: React.FC<CaseStudyCardProps> = ({ study, onSelect }) => {
   return (
     <div 
-      className="group grid grid-cols-1 md:grid-cols-12 gap-0 bg-woodblock/50 border border-woodblock/20 hover:border-cinnabar transition-all cursor-pointer overflow-hidden rounded-md"
+      className="group grid grid-cols-1 md:grid-cols-12 gap-0 bg-woodblock/70 border border-woodblock/70 hover:border-cinnabar transition-all cursor-pointer overflow-hidden rounded-md"
       onClick={() => onSelect(study)}
     >
       <div className="md:col-span-4 relative overflow-hidden h-48 md:h-auto">

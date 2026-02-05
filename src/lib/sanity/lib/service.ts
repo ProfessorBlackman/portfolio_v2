@@ -72,6 +72,7 @@ export class SanityService {
       title,
       "slug": slug.current,
       publishedAt,
+      "image": image.asset->url,
       date,
       excerpt,
       body,
@@ -79,7 +80,6 @@ export class SanityService {
       tags,
       category,
       duration,
-      dateCreated,
       references
     }`);
   }
@@ -91,6 +91,7 @@ export class SanityService {
       title,
       "slug": slug.current,
       publishedAt,
+      "image": image.asset->url,
       date,
       excerpt,
       body,
@@ -98,7 +99,6 @@ export class SanityService {
       tags,
       category,
       duration,
-      dateCreated,
       references
     }`, { slug });
   }

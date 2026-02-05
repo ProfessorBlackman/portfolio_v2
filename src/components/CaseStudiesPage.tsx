@@ -55,10 +55,10 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ caseStudies, o
         {/* Main Content: Case Study List */}
         <div className="lg:col-span-8 space-y-12">
           {filteredStudies.length > 0 ? filteredStudies.map((cs) => (
-            <CaseStudyCard 
-              key={cs._id} 
-              study={cs} 
-              onSelect={onSelectCaseStudy} 
+            <CaseStudyCard
+              key={cs._id}
+              study={cs}
+              onSelect={onSelectCaseStudy}
             />
           )) : (
             <div className="py-20 text-center bg-woodblock/5 rounded-md border border-dashed border-woodblock">
@@ -76,7 +76,7 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ caseStudies, o
         {/* Sidebar Filters */}
         <div className="lg:col-span-4 space-y-8 sticky top-32">
           {/* Search */}
-          <div className="bg-woodblock/10 p-8 border border-woodblock/20 rounded-md space-y-6">
+          <div className="bg-woodblock/70 p-8 border border-woodblock/70 rounded-md space-y-6">
             <h4 className="text-lg font-bold text-washi tracking-widest uppercase border-b border-woodblock/20 pb-4">Search</h4>
             <div className="relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-washi/30">🔍</span>
@@ -91,7 +91,7 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ caseStudies, o
           </div>
 
           {/* Tags / Areas of Study */}
-          <div className="bg-woodblock/10 p-8 border border-woodblock/20 rounded-md space-y-6">
+          <div className="bg-woodblock/70 p-8 border border-woodblock/70 rounded-md space-y-6">
             <h4 className="text-lg font-bold text-washi tracking-widest uppercase border-b border-woodblock/20 pb-4">Focus Areas</h4>
             <div className="flex flex-wrap gap-2">
               <button
@@ -117,7 +117,7 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ caseStudies, o
           </div>
 
           {/* Contextual Note */}
-          <div className="bg-woodblock/10 p-8 border border-woodblock/20 rounded-md space-y-4">
+          <div className="bg-woodblock/70 p-8 border border-woodblock/70 rounded-md space-y-4">
             <h4 className="text-lg font-bold text-washi tracking-widest uppercase border-b border-woodblock/20 pb-4">Engineering Depth</h4>
             <p className="text-sm text-washi/50 leading-relaxed">
               These case studies focus on the architecture, trade-offs, and reasoning behind my engineering decisions. I prioritize systems that solve real human problems under harsh technical constraints.

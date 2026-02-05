@@ -47,7 +47,7 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({ articles, onSelectAr
           {filteredArticles.length > 0 ? filteredArticles.map((article) => (
             <article 
               key={article._id}
-              className="group cursor-pointer space-y-6 bg-woodblock/10 p-10 border border-woodblock/20 hover:border-cinnabar transition-all hover:bg-woodblock/20 rounded-md"
+              className="group cursor-pointer space-y-6 bg-woodblock/70 p-10 border border-woodblock/70 hover:border-cinnabar transition-all hover:bg-woodblock/20 rounded-md"
               onClick={() => onSelectArticle(article)}
             >
               <div className="flex flex-wrap items-center gap-4 text-xs font-bold uppercase tracking-widest">
@@ -96,7 +96,7 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({ articles, onSelectAr
         {/* Sidebar */}
         <div className="lg:col-span-4 space-y-8">
           {/* Search Widget */}
-          <div className="bg-woodblock/10 p-8 border border-woodblock/20 rounded-md space-y-6">
+          <div className="bg-woodblock/70 p-8 border border-woodblock/70 rounded-md space-y-6">
             <h4 className="text-lg font-bold text-washi tracking-widest uppercase border-b border-woodblock/20 pb-4">Search</h4>
             <div className="relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-washi/30">🔍</span>
@@ -111,7 +111,7 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({ articles, onSelectAr
           </div>
 
           {/* Categories Widget */}
-          <div className="bg-woodblock/10 p-8 border border-woodblock/20 rounded-md space-y-6">
+          <div className="bg-woodblock/70 p-8 border border-woodblock/70 rounded-md space-y-6">
             <h4 className="text-lg font-bold text-washi tracking-widest uppercase border-b border-woodblock/20 pb-4">Categories</h4>
             <ul className="space-y-4">
               {categories.map(cat => (
@@ -130,7 +130,7 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({ articles, onSelectAr
           </div>
 
           {/* Tags Widget */}
-          <div className="bg-woodblock/10 p-8 border border-woodblock/20 rounded-md space-y-6">
+          <div className="bg-woodblock/70 p-8 border border-woodblock/70 rounded-md space-y-6">
             <h4 className="text-lg font-bold text-washi tracking-widest uppercase border-b border-woodblock/20 pb-4">Tags</h4>
             <div className="flex flex-wrap gap-2">
               {allTags.map(tag => (
@@ -148,7 +148,7 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({ articles, onSelectAr
           </div>
 
           {/* Popular Posts Widget */}
-          <div className="bg-woodblock/10 p-8 border border-woodblock/20 rounded-md space-y-6">
+          <div className="bg-woodblock/70 p-8 border border-woodblock/70 rounded-md space-y-6">
             <h4 className="text-lg font-bold text-washi tracking-widest uppercase border-b border-woodblock/20 pb-4">Popular Posts</h4>
             <div className="space-y-6">
               {popularPosts.map((post, idx) => (
@@ -167,7 +167,7 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({ articles, onSelectAr
           </div>
 
           {/* About Widget */}
-          <div className="bg-woodblock/10 p-8 border border-woodblock/20 rounded-md space-y-6">
+          <div className="bg-woodblock/70 p-8 border border-woodblock/70 rounded-md space-y-6">
             <h4 className="text-lg font-bold text-washi tracking-widest uppercase border-b border-woodblock/20 pb-4">About</h4>
             <p className="text-sm text-washi/50 leading-relaxed">
               Welcome to my corner of the internet where I write about whatever catches my eye in the world of software development, from backend adventures and microservices mishaps to AI experiments and the occasional deep dive into something weird but wonderful. If it's interesting, useful, or just plain cool, you'll probably find me writing about it here. Stick around, you might just learn something new (or at least leave with a few tabs open).
