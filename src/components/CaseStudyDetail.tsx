@@ -38,6 +38,8 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
       }
     };
   }, [study]);
+  console.log("this is study: ")
+  console.log(study)
 
   return (
     <div className="py-32 space-y-24 animate-in fade-in duration-700">
@@ -81,18 +83,20 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
         <Image 
           src={study.coverImage} 
           fill 
-          className="object-cover grayscale opacity-60" 
+          className="object-cover" 
           alt={study.title}
           priority
         />
-        <div className="absolute inset-0 flex items-center justify-center p-12">
-           <div className="bg-sumi/80 backdrop-blur p-12 max-w-2xl border-l-8 border-cinnabar">
-             <h3 className="text-xs uppercase tracking-generous text-cinnabar font-bold mb-4">Overview</h3>
-             <div className="text-xl md:text-2xl text-washi font-light leading-relaxed space-y-4 whitespace-pre-wrap">
-               <PortableText value={study.overview} components={PortableComponents} />
-             </div>
+      </div>
+
+      {/* Overview Section */}
+      <div className="max-w-4xl mx-auto py-24 px-6 md:px-0">
+         <div className="border-l-8 border-cinnabar p-12 bg-woodblock/5">
+           <h3 className="text-xs uppercase tracking-generous text-cinnabar font-bold mb-8">Overview</h3>
+           <div className="text-2xl md:text-3xl text-washi font-light leading-relaxed space-y-4 whitespace-pre-wrap">
+             <PortableText value={study.overview} components={PortableComponents} />
            </div>
-        </div>
+         </div>
       </div>
 
       {/* Metrics Row */}
@@ -125,7 +129,7 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
             <h4 className="text-xs uppercase tracking-generous text-cinnabar font-bold">Visualization</h4>
             {study.media.map((item, i) => (
               <figure key={i} className="space-y-4 border border-woodblock p-4 bg-woodblock/5">
-                {item._type === 'image' ? (
+                {item.type === 'image' ? (
                   <div className="relative aspect-video">
                     <Image 
                       src={item.url} 

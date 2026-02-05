@@ -1,7 +1,7 @@
 
 import React, { useState, useMemo } from 'react';
-import Image from 'next/image';
 import { CaseStudy } from '@/lib/types';
+import { CaseStudyCard } from './CaseStudyCard';
 
 interface CaseStudiesPageProps {
   caseStudies?: CaseStudy[];
@@ -26,7 +26,15 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ caseStudies, o
     return displayCaseStudies.filter(cs => {
       const matchesSearch = cs.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                             (cs.subtitle?.toLowerCase().includes(searchQuery.toLowerCase()) || false) ||
-                            (Array.isArray(cs.overview) ? cs.overview.some(p => typeof p === 'string' && p.toLowerCase().includes(searchQuery.toLowerCase())) : typeof cs.overview === 'string' && (cs.overview as string).toLowerCase().includes(searchQuery.toLowerCase()));
+                            (Array.isArray(cs.overview) ? cs.overview.some(p => {
+                              if (typeof p === 'string') return p.toLowerCase().includes(searchQuery.toLowerCase());
+                              if (p && typeof p === 'object' && 'children' in p && Array.isArray(p.children)) {
+                                return p.children.some((child: any) => 
+                                  typeof child.text === 'string' && child.text.toLowerCase().includes(searchQuery.toLowerCase())
+                                );
+                              }
+                              return false;
+                            }) : typeof cs.overview === 'string' && (cs.overview as string).toLowerCase().includes(searchQuery.toLowerCase()));
       const matchesTag = !activeTag || cs.tags?.includes(activeTag);
       return matchesSearch && matchesTag;
     });
@@ -47,42 +55,11 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ caseStudies, o
         {/* Main Content: Case Study List */}
         <div className="lg:col-span-8 space-y-12">
           {filteredStudies.length > 0 ? filteredStudies.map((cs) => (
-            <div 
+            <CaseStudyCard 
               key={cs._id} 
-              className="group grid grid-cols-1 md:grid-cols-12 gap-0 bg-woodblock/10 border border-woodblock/20 hover:border-cinnabar transition-all cursor-pointer overflow-hidden rounded-md"
-              onClick={() => onSelectCaseStudy(cs)}
-            >
-              <div className="md:col-span-4 relative overflow-hidden h-48 md:h-auto">
-                <Image 
-                  src={cs.coverImage} 
-                  alt={cs.title} 
-                  fill
-                  className="object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 scale-105 group-hover:scale-100"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 33vw, 25vw"
-                />
-                <div className="absolute inset-0 bg-sumi/20 group-hover:bg-transparent transition-colors z-10"></div>
-              </div>
-              <div className="md:col-span-8 p-8 space-y-6 flex flex-col justify-center">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-cinnabar">
-                    <span>{cs.duration}</span>
-                    <span className="w-2 h-[1px] bg-woodblock"></span>
-                    <span className="text-washi/40">{cs.client}</span>
-                  </div>
-                  <h3 className="text-3xl font-black text-washi leading-tight tracking-tighter group-hover:text-cinnabar transition-colors">
-                    {cs.title}
-                  </h3>
-                </div>
-                <p className="text-sm text-washi/50 leading-relaxed line-clamp-2">
-                  {Array.isArray(cs.overview) ? cs.overview[0] : cs.overview}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {cs.tags?.map(tag => (
-                    <span key={tag} className="text-[9px] uppercase tracking-widest text-washi/30 font-bold border border-woodblock px-2 py-0.5">#{tag}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
+              study={cs} 
+              onSelect={onSelectCaseStudy} 
+            />
           )) : (
             <div className="py-20 text-center bg-woodblock/5 rounded-md border border-dashed border-woodblock">
               <p className="text-2xl text-washi/40 italic">No case studies match your selection.</p>

@@ -17,6 +17,8 @@ export default function CaseStudies() {
       try {
         const data = await sanityService.getCaseStudies();
         setCaseStudies(data);
+        console.log("getCaseStudies");
+        console.log(data);
       } catch (error) {
         console.error('Error fetching case studies:', error);
       }

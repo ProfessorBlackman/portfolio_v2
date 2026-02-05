@@ -72,7 +72,7 @@ export interface Skill {
 }
 
 export interface CaseStudyMedia {
-  _type: 'image' | 'video';
+  type: 'image' | 'video';
   url: string;
   caption?: string;
 }
