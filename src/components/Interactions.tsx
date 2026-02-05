@@ -1,8 +1,19 @@
 
-import React, { useState } from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import {
+  getUserId,
+  subscribeToInteractions,
+  subscribeToComments,
+  updateReaction,
+  addComment,
+  formatCommentDate,
+  type Comment as FirebaseComment,
+} from '@/lib/firebase/interactions';
 
 interface Comment {
-  id: number;
+  id: string;
   author: string;
   text: string;
   date: string;
@@ -12,44 +23,116 @@ export const Interactions: React.FC<{ contentId: string }> = ({ contentId }) => 
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
   const [userReaction, setUserReaction] = useState<'like' | 'dislike' | null>(null);
-  const [comments, setComments] = useState<Comment[]>([
-    { id: 1, author: 'S. Tanaka', text: 'Exceptional reasoning on the architectural trade-offs.', date: '2 days ago' }
-  ]);
+  const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
+  const [userId, setUserId] = useState<string>('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleLike = () => {
-    if (userReaction === 'like') {
-      setLikes(likes - 1);
-      setUserReaction(null);
-    } else {
-      if (userReaction === 'dislike') setDislikes(dislikes - 1);
-      setLikes(likes + 1);
-      setUserReaction('like');
-    }
-  };
+  useEffect(() => {
+    // Get or generate user ID
+    const id = getUserId();
+    setUserId(id);
 
-  const handleDislike = () => {
-    if (userReaction === 'dislike') {
-      setDislikes(dislikes - 1);
-      setUserReaction(null);
-    } else {
-      if (userReaction === 'like') setLikes(likes - 1);
-      setDislikes(dislikes + 1);
-      setUserReaction('dislike');
-    }
-  };
+    // Subscribe to real-time interaction updates
+    const unsubscribeInteractions = subscribeToInteractions(contentId, (data) => {
+      setLikes(data.likes);
+      setDislikes(data.dislikes);
+      setUserReaction(data.userReactions[id] || null);
+    });
 
-  const submitComment = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newComment.trim()) return;
-    const comment: Comment = {
-      id: Date.now(),
-      author: 'Guest Reader',
-      text: newComment,
-      date: 'Just now'
+    // Subscribe to real-time comment updates
+    const unsubscribeComments = subscribeToComments(contentId, (firebaseComments) => {
+      const formattedComments: Comment[] = firebaseComments.map((comment: FirebaseComment) => ({
+        id: comment.id,
+        author: comment.userId === id ? 'You' : comment.author,
+        text: comment.text,
+        date: formatCommentDate(comment.createdAt),
+      }));
+      setComments(formattedComments);
+    });
+
+    // Cleanup subscriptions on unmount
+    return () => {
+      unsubscribeInteractions();
+      unsubscribeComments();
     };
-    setComments([comment, ...comments]);
-    setNewComment('');
+  }, [contentId]);
+
+  const handleLike = async () => {
+    if (!userId) return;
+
+    const newReaction = userReaction === 'like' ? null : 'like';
+
+    // Optimistic update
+    const prevReaction = userReaction;
+    const prevLikes = likes;
+    const prevDislikes = dislikes;
+
+    if (newReaction === 'like') {
+      setUserReaction('like');
+      setLikes(prevReaction === 'dislike' ? likes + 1 : likes + 1);
+      if (prevReaction === 'dislike') setDislikes(dislikes - 1);
+    } else {
+      setUserReaction(null);
+      setLikes(likes - 1);
+    }
+
+    try {
+      await updateReaction(contentId, userId, newReaction);
+    } catch (error) {
+      // Revert on error
+      setUserReaction(prevReaction);
+      setLikes(prevLikes);
+      setDislikes(prevDislikes);
+      console.error('Failed to update reaction:', error);
+    }
+  };
+
+  const handleDislike = async () => {
+    if (!userId) return;
+
+    const newReaction = userReaction === 'dislike' ? null : 'dislike';
+
+    // Optimistic update
+    const prevReaction = userReaction;
+    const prevLikes = likes;
+    const prevDislikes = dislikes;
+
+    if (newReaction === 'dislike') {
+      setUserReaction('dislike');
+      setDislikes(prevReaction === 'like' ? dislikes + 1 : dislikes + 1);
+      if (prevReaction === 'like') setLikes(likes - 1);
+    } else {
+      setUserReaction(null);
+      setDislikes(dislikes - 1);
+    }
+
+    try {
+      await updateReaction(contentId, userId, newReaction);
+    } catch (error) {
+      // Revert on error
+      setUserReaction(prevReaction);
+      setLikes(prevLikes);
+      setDislikes(prevDislikes);
+      console.error('Failed to update reaction:', error);
+    }
+  };
+
+  const submitComment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newComment.trim() || !userId || isSubmitting) return;
+
+    setIsSubmitting(true);
+
+    try {
+      await addComment(contentId, userId, newComment.trim(), 'Guest Reader');
+      setNewComment('');
+    } catch (error) {
+      console.error('Failed to submit comment:', error);
+      alert('Failed to submit comment. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -99,7 +182,7 @@ export const Interactions: React.FC<{ contentId: string }> = ({ contentId }) => 
                 <span className="text-xs font-bold text-cinnabar tracking-generous uppercase">{comment.author}</span>
                 <span className="text-[10px] text-washi/20 font-mono uppercase">{comment.date}</span>
               </div>
-              <p className="text-lg text-washi/70 leading-relaxed italic">"{comment.text}"</p>
+              <p className="text-lg text-washi/70 leading-relaxed italic">&ldquo;{comment.text}&rdquo;</p>
             </div>
           ))}
         </div>

@@ -1,0 +1,41 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Interactions collection rules
+    match /interactions/{contentId} {
+      // Allow anyone to read interaction data
+      allow read: if true;
+
+      // Allow anyone to create a new interaction document
+      allow create: if true;
+
+      // Allow anyone to update interactions (likes/dislikes)
+      // Validate that only allowed fields are being updated
+      allow update: if request.resource.data.keys().hasAll(['likes', 'dislikes', 'userReactions'])
+                    && request.resource.data.likes is int
+                    && request.resource.data.dislikes is int
+                    && request.resource.data.likes >= 0
+                    && request.resource.data.dislikes >= 0;
+
+      // Comments subcollection
+      match /comments/{commentId} {
+        // Allow anyone to read comments
+        allow read: if true;
+
+        // Allow anyone to create comments with validation
+        allow create: if request.resource.data.keys().hasAll(['userId', 'text', 'author', 'createdAt'])
+                      && request.resource.data.text is string
+                      && request.resource.data.text.size() > 0
+                      && request.resource.data.text.size() <= 1000
+                      && request.resource.data.userId is string
+                      && request.resource.data.author is string
+                      && request.resource.data.createdAt == request.time;
+
+        // Prevent updates and deletes (comments are immutable)
+        allow update, delete: if false;
+      }
+    }
+  }
+}
