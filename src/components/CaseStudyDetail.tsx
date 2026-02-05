@@ -52,8 +52,8 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
           <span className="text-xl">←</span> BACK TO CASE STUDIES
         </button>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-          <div className="lg:col-span-8 space-y-8">
+        <div className="flex flex-col justify-between items-start gap-12 w-full">
+          <div className="lg:col-span-8 space-y-8 ">
             <div className="flex flex-wrap items-center gap-6 text-xs font-bold uppercase tracking-widest text-cinnabar">
               <span className="bg-cinnabar text-washi px-3 py-1">CLIENT: {study.client}</span>
               <span className="text-washi/40">{study.date}</span>
@@ -66,13 +66,13 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
               {study.subtitle}
             </p>
           </div>
-          <div className="lg:col-span-4 flex flex-col justify-end space-y-4 lg:text-right border-t lg:border-t-0 lg:border-l border-woodblock pt-8 lg:pt-0 lg:pl-8">
+          <div className="lg:col-span-4 flex flex-col justify-start space-y-4 border-t lg:border-t-0 lg:border-l border-woodblock pt-8 lg:pt-0 lg:pl-8">
              <div className="space-y-1">
                <p className="text-[10px] uppercase tracking-generous text-washi/30 font-bold">AUTHOR</p>
                <p className="text-2xl font-bold text-washi">{study.author}</p>
              </div>
              <div className="flex flex-wrap lg:justify-end gap-2">
-               {study.tags?.map(t => <span key={t} className="text-[10px] uppercase text-cinnabar/60 border border-cinnabar/20 px-2 py-0.5">#{t}</span>)}
+               {study.tags?.map(t => <span key={t} className="text-[10px] uppercase text-cinnabar/80 border border-cinnabar/20 px-2 py-0.5">#{t}</span>)}
              </div>
           </div>
         </div>
@@ -90,7 +90,7 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
       </div>
 
       {/* Overview Section */}
-      <div className="max-w-4xl mx-auto py-24 px-6 md:px-0">
+      <div className="mx-auto w-full py-24 px-6 md:px-0">
          <div className="border-l-8 border-cinnabar p-12 bg-woodblock/5">
            <h3 className="text-xs uppercase tracking-generous text-cinnabar font-bold mb-8">Overview</h3>
            <div className="text-2xl md:text-3xl text-washi font-light leading-relaxed space-y-4 whitespace-pre-wrap">
@@ -110,7 +110,7 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
       </div>
 
       {/* Detailed Content Sections */}
-      <div className="max-w-4xl mx-auto space-y-32">
+      <div className=" mx-auto space-y-32">
         {/* The Problem */}
         {study.problem && (
           <section className="space-y-12">
@@ -160,18 +160,28 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
         )}
 
         {/* Methodology */}
-        {study.methodology && (
-          <section className="grid grid-cols-1 md:grid-cols-12 gap-12">
-             <div className="md:col-span-4">
-               <h3 className="text-4xl font-bold tracking-tighter text-washi sticky top-32">
-                 METHOD<br />OLOGY
-               </h3>
-             </div>
-             <div className="md:col-span-8 text-xl text-washi/60 leading-relaxed space-y-6 whitespace-pre-wrap">
-               <PortableText value={study.methodology} components={PortableComponents} />
-             </div>
+          {study.methodology && (
+          <section className="space-y-12 bg-woodblock/10 p-12 border-l-4 border-cinnabar">
+            <h3 className="text-4xl font-bold tracking-tighter text-washi flex items-center gap-6">
+              <span className="text-cinnabar">03.</span> METHODOLOGY
+            </h3>
+            <div className="text-2xl text-washi leading-relaxed space-y-8 whitespace-pre-wrap">
+              <PortableText value={study.methodology} components={PortableComponents} />
+            </div>
           </section>
         )}
+        {/*{study.methodology && (*/}
+        {/*  <section className="grid grid-cols-1 md:grid-cols-12 gap-12">*/}
+        {/*     <div className="md:col-span-4">*/}
+        {/*       <h3 className="text-4xl font-bold tracking-tighter text-washi sticky top-32">*/}
+        {/*         METHOD<br />OLOGY*/}
+        {/*       </h3>*/}
+        {/*     </div>*/}
+        {/*     <div className="md:col-span-8 text-xl text-washi/60 leading-relaxed space-y-6 whitespace-pre-wrap">*/}
+        {/*       <PortableText value={study.methodology} components={PortableComponents} />*/}
+        {/*     </div>*/}
+        {/*  </section>*/}
+        {/*)}*/}
 
         {/* Implementation & Results */}
         {study.results && (
@@ -188,7 +198,7 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
 
         {/* Conclusion */}
         {study.conclusion && (
-          <div className="bg-cinnabar p-16 space-y-8">
+          <div className="bg-cinnabar/30 border-t border-woodblock p-16 space-y-8">
              <h3 className="text-5xl font-black text-washi tracking-tighter">Conclusion</h3>
              <div className="text-2xl text-washi/90 leading-relaxed space-y-6 whitespace-pre-wrap">
                <PortableText value={study.conclusion} components={PortableComponents} />

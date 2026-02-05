@@ -53,7 +53,7 @@ export default function CaseStudyPage({ params }: { params: Promise<{ slug: stri
   return (
     <div className="min-h-screen pattern-bg selection:bg-cinnabar selection:text-washi">
       <Header />
-      <main className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 space-y-12">
+      <main className="max-w-3/4 mx-auto px-6 sm:px-12 lg:px-16 space-y-12">
         <CaseStudyDetail study={study} onBack={() => router.push('/case-studies')} />
       </main>
       <Footer />
