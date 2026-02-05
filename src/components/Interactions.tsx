@@ -170,7 +170,7 @@ export const Interactions: React.FC<{ contentId: string }> = ({ contentId }) => 
             className="w-full bg-woodblock/10 border-2 border-woodblock/40 p-6 text-xl text-washi focus:border-cinnabar outline-none transition-all placeholder:text-washi/10 rounded-sm"
             rows={3}
           />
-          <button type="submit" className="px-10 py-4 bg-cinnabar text-washi font-bold uppercase tracking-generous text-xs hover:translate-y-[-2px] transition-all">
+          <button type="submit" className="px-10 py-4 bg-cinnabar text-washi font-bold uppercase tracking-generous text-xs hover:-translate-y-0.5 transition-all">
             POST COMMENT
           </button>
         </form>

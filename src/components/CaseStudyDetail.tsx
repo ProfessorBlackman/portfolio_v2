@@ -1,10 +1,11 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { CaseStudy } from '@/lib/types';
 import { Interactions } from './Interactions';
 import { PortableText } from 'next-sanity';
 import { PortableComponents } from './blog/portable-components';
+import { CaseStudyNav } from './CaseStudyNav';
 
 interface CaseStudyDetailProps {
   study: CaseStudy;
@@ -14,14 +15,14 @@ interface CaseStudyDetailProps {
 export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
-    
+
     // SEO Meta Updates
     const previousTitle = document.title;
     document.title = `${study.title} | Case Study | Methuselah Nwodobeh`;
-    
+
     let metaDescription = document.querySelector('meta[name="description"]');
     const originalDescription = metaDescription?.getAttribute('content') || "";
-    
+
     if (metaDescription) {
       metaDescription.setAttribute('content', study.seoDescription || "");
     } else if (study.seoDescription) {
@@ -38,11 +39,31 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
       }
     };
   }, [study]);
-  console.log("this is study: ")
-  console.log(study)
+
+  // Build navigation sections based on what's present in the case study
+  const navSections = useMemo(() => [
+    { id: 'overview', label: 'Overview', isPresent: !!study.overview },
+    { id: 'metrics', label: 'Metrics', isPresent: !!study.metrics && study.metrics.length > 0 },
+    { id: 'problem', label: 'The Problem', isPresent: !!study.problem },
+    { id: 'background', label: 'Background', isPresent: !!study.background },
+    { id: 'investigation', label: 'Investigation', isPresent: !!study.investigation },
+    { id: 'findings', label: 'Findings', isPresent: !!study.findings },
+    { id: 'media', label: 'Visualization', isPresent: !!study.media && study.media.length > 0 },
+    { id: 'solution', label: 'The Solution', isPresent: !!study.solution },
+    { id: 'methodology', label: 'Methodology', isPresent: !!study.methodology },
+    { id: 'implementation', label: 'Implementation', isPresent: !!study.implementation },
+    { id: 'results', label: 'Results', isPresent: !!study.results },
+    { id: 'conclusion', label: 'Conclusion', isPresent: !!study.conclusion },
+    { id: 'references', label: 'References', isPresent: !!study.references && study.references.length > 0 },
+    { id: 'appendix', label: 'Appendix', isPresent: !!study.appendix },
+    { id: 'interactions', label: 'Discussion', isPresent: true },
+  ], [study])
 
   return (
-    <div className="py-32 space-y-24 animate-in fade-in duration-700">
+    <div className="py-32 animate-in fade-in duration-700">
+      <div className="lg:grid lg:grid-cols-12 lg:gap-16">
+        {/* Main Content */}
+        <div className="lg:col-span-9 space-y-24">
       {/* Header Section */}
       <div className="space-y-16">
         <button 
@@ -90,7 +111,7 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
       </div>
 
       {/* Overview Section */}
-      <div className="mx-auto w-full py-24 px-6 md:px-0">
+      <div id="overview" className="mx-auto w-full py-24 px-6 md:px-0 scroll-mt-32">
          <div className="border-l-8 border-cinnabar p-12 bg-woodblock/5">
            <h3 className="text-xs uppercase tracking-generous text-cinnabar font-bold mb-8">Overview</h3>
            <div className="text-2xl md:text-3xl text-washi font-light leading-relaxed space-y-4 whitespace-pre-wrap">
@@ -100,20 +121,22 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
       </div>
 
       {/* Metrics Row */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-woodblock border-y border-woodblock">
-        {study.metrics?.map((m, i) => (
+      {study.metrics && study.metrics.length > 0 && (
+      <div id="metrics" className="grid grid-cols-1 md:grid-cols-3 gap-px bg-woodblock border-y border-woodblock scroll-mt-32">
+        {study.metrics.map((m, i) => (
           <div key={i} className="bg-sumi p-12 flex flex-col items-center justify-center space-y-4">
             <span className="text-7xl font-black text-cinnabar tracking-tighter">{m.value}</span>
             <span className="text-xs uppercase tracking-generous text-washi/40 font-bold">{m.label}</span>
           </div>
         ))}
       </div>
+      )}
 
       {/* Detailed Content Sections */}
       <div className=" mx-auto space-y-32">
         {/* The Problem */}
         {study.problem && (
-          <section className="space-y-12">
+          <section id="problem" className="space-y-12 scroll-mt-32">
             <h3 className="text-4xl font-bold tracking-tighter text-washi flex items-center gap-6">
               <span className="text-cinnabar">01.</span> THE PROBLEM
             </h3>
@@ -123,9 +146,45 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
           </section>
         )}
 
+        {/* Background */}
+        {study.background && (
+          <section id="background" className="space-y-12 scroll-mt-32">
+            <h3 className="text-4xl font-bold tracking-tighter text-washi flex items-center gap-6">
+              <span className="text-cinnabar">02.</span> BACKGROUND
+            </h3>
+            <div className="text-2xl text-washi/70 leading-relaxed space-y-8 font-light whitespace-pre-wrap">
+              <PortableText value={study.background} components={PortableComponents} />
+            </div>
+          </section>
+        )}
+
+        {/* Investigation */}
+        {study.investigation && (
+          <section id="investigation" className="space-y-12 scroll-mt-32">
+            <h3 className="text-4xl font-bold tracking-tighter text-washi flex items-center gap-6">
+              <span className="text-cinnabar">03.</span> INVESTIGATION
+            </h3>
+            <div className="text-2xl text-washi/70 leading-relaxed space-y-8 font-light whitespace-pre-wrap">
+              <PortableText value={study.investigation} components={PortableComponents} />
+            </div>
+          </section>
+        )}
+
+        {/* Findings */}
+        {study.findings && (
+          <section id="findings" className="space-y-12 scroll-mt-32">
+            <h3 className="text-4xl font-bold tracking-tighter text-washi flex items-center gap-6">
+              <span className="text-cinnabar">04.</span> FINDINGS
+            </h3>
+            <div className="text-2xl text-washi/70 leading-relaxed space-y-8 font-light whitespace-pre-wrap">
+              <PortableText value={study.findings} components={PortableComponents} />
+            </div>
+          </section>
+        )}
+
         {/* Media Block 1 */}
         {study.media && study.media.length > 0 && (
-          <div className="space-y-12">
+          <div id="media" className="space-y-12 scroll-mt-32">
             <h4 className="text-xs uppercase tracking-generous text-cinnabar font-bold">Visualization</h4>
             {study.media.map((item, i) => (
               <figure key={i} className="space-y-4 border border-woodblock p-4 bg-woodblock/5">
@@ -149,9 +208,9 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
 
         {/* The Solution */}
         {study.solution && (
-          <section className="space-y-12 bg-woodblock/10 p-12 border-l-4 border-cinnabar">
+          <section id="solution" className="space-y-12 bg-woodblock/10 p-12 border-l-4 border-cinnabar scroll-mt-32">
             <h3 className="text-4xl font-bold tracking-tighter text-washi flex items-center gap-6">
-              <span className="text-cinnabar">02.</span> THE SOLUTION
+              <span className="text-cinnabar">05.</span> THE SOLUTION
             </h3>
             <div className="text-2xl text-washi leading-relaxed space-y-8 whitespace-pre-wrap">
               <PortableText value={study.solution} components={PortableComponents} />
@@ -161,12 +220,24 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
 
         {/* Methodology */}
           {study.methodology && (
-          <section className="space-y-12 bg-woodblock/10 p-12 border-l-4 border-cinnabar">
+          <section id="methodology" className="space-y-12 bg-woodblock/10 p-12 border-l-4 border-cinnabar scroll-mt-32">
             <h3 className="text-4xl font-bold tracking-tighter text-washi flex items-center gap-6">
-              <span className="text-cinnabar">03.</span> METHODOLOGY
+              <span className="text-cinnabar">06.</span> METHODOLOGY
             </h3>
             <div className="text-2xl text-washi leading-relaxed space-y-8 whitespace-pre-wrap">
               <PortableText value={study.methodology} components={PortableComponents} />
+            </div>
+          </section>
+        )}
+
+        {/* Implementation */}
+        {study.implementation && (
+          <section id="implementation" className="space-y-12 scroll-mt-32">
+            <h3 className="text-4xl font-bold tracking-tighter text-washi flex items-center gap-6">
+              <span className="text-cinnabar">07.</span> IMPLEMENTATION
+            </h3>
+            <div className="text-2xl text-washi/70 leading-relaxed space-y-8 font-light whitespace-pre-wrap">
+              <PortableText value={study.implementation} components={PortableComponents} />
             </div>
           </section>
         )}
@@ -183,12 +254,12 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
         {/*  </section>*/}
         {/*)}*/}
 
-        {/* Implementation & Results */}
+        {/* Results */}
         {study.results && (
-          <div className="space-y-16 border-t border-woodblock pt-16">
+          <div id="results" className="space-y-16 border-t border-woodblock pt-16 scroll-mt-32">
             <div className="space-y-8">
                <h4 className="text-xs uppercase tracking-generous text-cinnabar font-bold">Outcome</h4>
-               <h3 className="text-5xl font-black text-washi tracking-tighter">Implementation & Results</h3>
+               <h3 className="text-5xl font-black text-washi tracking-tighter">Results</h3>
                <div className="text-2xl text-washi/80 leading-relaxed space-y-8 font-light whitespace-pre-wrap">
                  <PortableText value={study.results} components={PortableComponents} />
                </div>
@@ -198,7 +269,7 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
 
         {/* Conclusion */}
         {study.conclusion && (
-          <div className="bg-cinnabar/30 border-t border-woodblock p-16 space-y-8">
+          <div id="conclusion" className="bg-cinnabar/30 border-t border-woodblock p-16 space-y-8 scroll-mt-32">
              <h3 className="text-5xl font-black text-washi tracking-tighter">Conclusion</h3>
              <div className="text-2xl text-washi/90 leading-relaxed space-y-6 whitespace-pre-wrap">
                <PortableText value={study.conclusion} components={PortableComponents} />
@@ -206,16 +277,59 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
           </div>
         )}
 
-        <Interactions contentId={study._id} />
+        {/* References */}
+        {study.references && study.references.length > 0 && (
+          <div id="references" className="space-y-12 scroll-mt-32">
+            <h3 className="text-4xl font-bold tracking-tighter text-washi">References</h3>
+            <ol className="space-y-4 list-decimal list-inside text-washi/70">
+              {study.references.map((ref, i) => (
+                <li key={i} className="text-lg">
+                  {ref.author}. ({ref.year}). <em>{ref.title}</em>.
+                  {ref.link && (
+                    <a
+                      href={ref.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-cinnabar hover:underline ml-2"
+                    >
+                      Link
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
+
+        {/* Appendix */}
+        {study.appendix && (
+          <div id="appendix" className="space-y-12 border-t border-woodblock pt-16 scroll-mt-32">
+            <h3 className="text-4xl font-bold tracking-tighter text-washi">Appendix</h3>
+            <div className="text-lg text-washi/70 leading-relaxed space-y-6 whitespace-pre-wrap">
+              <PortableText value={study.appendix} components={PortableComponents} />
+            </div>
+          </div>
+        )}
+
+        <div id="interactions" className="scroll-mt-32">
+          <Interactions contentId={study._id} />
+        </div>
 
         {/* Footer Navigation */}
         <div className="pt-16 flex justify-center">
-           <button 
+           <button
              onClick={onBack}
              className="px-16 py-6 border-2 border-cinnabar text-cinnabar font-bold uppercase tracking-generous hover:bg-cinnabar hover:text-washi transition-all text-xl"
            >
              BACK TO CASE STUDIES
            </button>
+        </div>
+      </div>
+        </div>
+
+        {/* Sticky Navigation Sidebar */}
+        <div className="lg:col-span-3 ml-20 mt-12">
+          <CaseStudyNav sections={navSections} />
         </div>
       </div>
     </div>
