@@ -18,7 +18,8 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({article, onBack}) =
     console.log(article.image)
 
     return (
-        <div className="py-20 pt-32 sm:py-24 sm:pt-28 md:py-28 lg:py-32 space-y-10 sm:space-y-12 md:space-y-16 animate-in fade-in duration-700 max-w-7xl mx-auto">
+        <div className="py-20 pt-32 sm:py-24 sm:pt-28 md:py-28 lg:py-32 animate-in fade-in duration-700">
+            <div className="max-w-5xl mx-auto space-y-10 sm:space-y-12 md:space-y-16">
             <button
                 onClick={onBack}
                 className="flex items-center gap-2 sm:gap-3 md:gap-4 text-[10px] sm:text-xs font-bold uppercase tracking-generous text-washi/40 hover:text-cinnabar transition-colors mb-8 sm:mb-10 md:mb-12"
@@ -82,6 +83,7 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({article, onBack}) =
                 >
                     EXPLORE MORE THOUGHTS
                 </button>
+            </div>
             </div>
         </div>
     );

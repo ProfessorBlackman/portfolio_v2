@@ -70,7 +70,7 @@ export const Header: React.FC<HeaderProps> = ({ activeSection }) => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full max-w-full bg-sumi/90 backdrop-blur-xl border-b border-woodblock">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative">
+      <div className="w-full max-w-7xl lg:max-w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative">
         <div className="flex justify-between items-center h-24">
           <div className="shrink-0 z-50">
             <Link

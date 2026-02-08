@@ -33,7 +33,7 @@ export default function CaseStudies() {
   return (
     <div className="min-h-screen w-full max-w-full overflow-x-hidden pattern-bg selection:bg-cinnabar selection:text-washi">
       <Header />
-      <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 space-y-12">
+      <main className="w-full max-w-7xl lg:max-w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 space-y-12">
         <CaseStudiesPage caseStudies={caseStudies} onSelectCaseStudy={handleSelectCaseStudy} />
       </main>
       <Footer />
