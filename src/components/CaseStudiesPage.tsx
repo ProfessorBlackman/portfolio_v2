@@ -1,7 +1,8 @@
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { CaseStudy } from '@/lib/types';
 import { CaseStudyCard } from './CaseStudyCard';
+import { Filter, X } from 'lucide-react';
 
 interface CaseStudiesPageProps {
   caseStudies?: CaseStudy[];
@@ -11,6 +12,27 @@ interface CaseStudiesPageProps {
 export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ caseStudies, onSelectCaseStudy }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const filterRef = useRef<HTMLDivElement>(null);
+  const filterButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Close filter dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isFilterOpen &&
+        filterRef.current &&
+        filterButtonRef.current &&
+        !filterRef.current.contains(event.target as Node) &&
+        !filterButtonRef.current.contains(event.target as Node)
+      ) {
+        setIsFilterOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isFilterOpen]);
 
   const displayCaseStudies = useMemo(() => {
     return caseStudies && caseStudies.length > 0 ? caseStudies : [];
@@ -51,6 +73,86 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ caseStudies, o
         </p>
       </div>
 
+      {/* Mobile Search & Filter Bar */}
+      <div className="lg:hidden space-y-4">
+        <div className="flex gap-3">
+          {/* Search Bar */}
+          <div className="flex-1 relative">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-washi/30">🔍</span>
+            <input
+              type="text"
+              placeholder="Search case studies..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-woodblock/70 border border-woodblock/40 p-4 pl-12 text-sm text-washi focus:border-cinnabar outline-none transition-all placeholder:text-washi/20 rounded-sm"
+            />
+          </div>
+
+          {/* Filter Button */}
+          <button
+            ref={filterButtonRef}
+            onClick={() => setIsFilterOpen(!isFilterOpen)}
+            className="px-4 py-4 bg-woodblock/70 border border-woodblock/40 text-washi hover:text-cinnabar hover:border-cinnabar transition-all rounded-sm flex items-center gap-2"
+          >
+            {isFilterOpen ? <X className="w-5 h-5" /> : <Filter className="w-5 h-5" />}
+          </button>
+        </div>
+
+        {/* Mobile Filter Dropdown */}
+        {isFilterOpen && (
+          <div
+            ref={filterRef}
+            className="bg-sumi border border-woodblock shadow-2xl rounded-sm p-6 space-y-6 animate-in slide-in-from-top-4 duration-300"
+          >
+            {/* Tags / Areas of Study */}
+            <div className="space-y-4">
+              <h4 className="text-sm font-bold text-washi tracking-widest uppercase border-b border-woodblock/20 pb-3">Focus Areas</h4>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => {
+                    setActiveTag(null);
+                    setIsFilterOpen(false);
+                  }}
+                  className={`px-3 py-2 text-[10px] font-bold uppercase tracking-widest rounded transition-all border ${
+                    !activeTag ? 'bg-cinnabar border-cinnabar text-washi' : 'bg-woodblock/30 border-woodblock/40 text-washi/40 hover:border-washi/60'
+                  }`}
+                >
+                  All Areas
+                </button>
+                {allTags.map(tag => (
+                  <button
+                    key={tag}
+                    onClick={() => {
+                      setActiveTag(activeTag === tag ? null : tag);
+                      setIsFilterOpen(false);
+                    }}
+                    className={`px-3 py-2 text-[10px] font-bold uppercase tracking-widest rounded transition-all border ${
+                      activeTag === tag ? 'bg-cinnabar border-cinnabar text-washi' : 'bg-woodblock/30 border-woodblock/40 text-washi/40 hover:border-washi/60 hover:text-washi'
+                    }`}
+                  >
+                    #{tag}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Clear Filters Button */}
+            {(searchQuery || activeTag) && (
+              <button
+                onClick={() => {
+                  setSearchQuery('');
+                  setActiveTag(null);
+                  setIsFilterOpen(false);
+                }}
+                className="w-full text-cinnabar underline font-bold uppercase tracking-generous text-xs py-2"
+              >
+                Clear all filters
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         {/* Main Content: Case Study List */}
         <div className="lg:col-span-8 space-y-12">
@@ -73,8 +175,8 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ caseStudies, o
           )}
         </div>
 
-        {/* Sidebar Filters */}
-        <div className="lg:col-span-4 space-y-8 sticky top-32">
+        {/* Sidebar Filters - Desktop Only */}
+        <div className="hidden lg:block lg:col-span-4 space-y-8 sticky top-32">
           {/* Search */}
           <div className="bg-woodblock/70 p-8 border border-woodblock/70 rounded-md space-y-6">
             <h4 className="text-lg font-bold text-washi tracking-widest uppercase border-b border-woodblock/20 pb-4">Search</h4>
@@ -116,8 +218,8 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ caseStudies, o
             </div>
           </div>
 
-          {/* Contextual Note */}
-          <div className="bg-woodblock/70 p-8 border border-woodblock/70 rounded-md space-y-4">
+          {/* Contextual Note - Hidden on Small Devices */}
+          <div className="hidden md:block bg-woodblock/70 p-8 border border-woodblock/70 rounded-md space-y-4">
             <h4 className="text-lg font-bold text-washi tracking-widest uppercase border-b border-woodblock/20 pb-4">Engineering Depth</h4>
             <p className="text-sm text-washi/50 leading-relaxed">
               These case studies focus on the architecture, trade-offs, and reasoning behind my engineering decisions. I prioritize systems that solve real human problems under harsh technical constraints.
