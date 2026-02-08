@@ -45,83 +45,83 @@ export const ContactSection: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="space-y-16">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-        <div className="lg:col-span-5 space-y-8">
-          <h3 className="text-6xl font-black tracking-tighter text-washi leading-none">
-            LET&#39;S <br /><span className="text-cinnabar underline">TALK</span>
+    <section id="contact" className="space-y-10 sm:space-y-12 md:space-y-16">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 md:gap-16">
+        <div className="lg:col-span-5 space-y-6 sm:space-y-8">
+          <h3 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter text-washi leading-none">
+            LET&#39;S<br className="hidden lg:block" /> <span className="text-cinnabar underline">TALK</span>
           </h3>
-          <p className="text-2xl text-washi/70 leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-washi/70 leading-relaxed">
             If you&#39;re interested in thoughtful system design, practical software for real constraints, or collaborating on something that needs careful thinking, I&#39;d love to hear from you.
           </p>
-          
-          <div className="space-y-6 pt-12">
-            <a href="mailto:methuselahnwodobeh@gmail.com" className="group block space-y-2">
-              <span className="text-xs uppercase tracking-generous text-cinnabar font-bold">Email</span>
-              <span className="text-3xl font-light text-washi group-hover:text-cinnabar transition-colors border-b border-woodblock block pb-2">
+
+          <div className="space-y-4 sm:space-y-6 pt-6 sm:pt-8 md:pt-12">
+            <a href="mailto:methuselahnwodobeh@gmail.com" className="group block space-y-1 sm:space-y-2">
+              <span className="text-[10px] sm:text-xs uppercase tracking-generous text-cinnabar font-bold">Email</span>
+              <span className="text-xl sm:text-2xl md:text-3xl font-light text-washi group-hover:text-cinnabar transition-colors border-b border-woodblock block pb-2 break-all">
                 methuselahnwodobeh@gmail.com
               </span>
             </a>
-            <div className="group block space-y-2">
-              <span className="text-xs uppercase tracking-generous text-cinnabar font-bold">Location</span>
-              <span className="text-3xl font-light text-washi border-b border-woodblock block pb-2">
+            <div className="group block space-y-1 sm:space-y-2">
+              <span className="text-[10px] sm:text-xs uppercase tracking-generous text-cinnabar font-bold">Location</span>
+              <span className="text-xl sm:text-2xl md:text-3xl font-light text-washi border-b border-woodblock block pb-2">
                 Takoradi, Ghana
               </span>
             </div>
           </div>
         </div>
 
-        <div className="lg:col-span-7 bg-woodblock/20 p-8 md:p-16 border-r-8 border-cinnabar">
-          <form ref={form} className="space-y-10" onSubmit={sendEmail}>
-            <div className="space-y-12">
+        <div className="lg:col-span-7 bg-woodblock/20 p-6 sm:p-8 md:p-12 lg:p-16 border-r-4 sm:border-r-8 border-cinnabar">
+          <form ref={form} className="space-y-8 sm:space-y-10" onSubmit={sendEmail}>
+            <div className="space-y-8 sm:space-y-10 md:space-y-12">
               <div className="relative">
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   name="user_name"
                   id="name"
                   required
                   placeholder=" "
-                  className="peer w-full bg-transparent border-b-2 border-woodblock py-4 text-2xl focus:border-cinnabar outline-none transition-all"
+                  className="peer w-full bg-transparent border-b-2 border-woodblock py-3 sm:py-4 text-lg sm:text-xl md:text-2xl focus:border-cinnabar outline-none transition-all"
                 />
-                <label htmlFor="name" className="absolute left-0 top-4 text-washi/20 pointer-events-none transition-all peer-focus:-top-6 peer-focus:text-cinnabar peer-focus:text-sm peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-sm">YOUR NAME</label>
+                <label htmlFor="name" className="absolute left-0 top-3 sm:top-4 text-washi/20 pointer-events-none transition-all peer-focus:-top-6 peer-focus:text-cinnabar peer-focus:text-xs sm:peer-focus:text-sm peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-xs sm:peer-[:not(:placeholder-shown)]:text-sm">YOUR NAME</label>
               </div>
-              
+
               <div className="relative">
-                <input 
-                  type="email" 
+                <input
+                  type="email"
                   name="user_email"
                   id="email"
                   required
                   placeholder=" "
-                  className="peer w-full bg-transparent border-b-2 border-woodblock py-4 text-2xl focus:border-cinnabar outline-none transition-all"
+                  className="peer w-full bg-transparent border-b-2 border-woodblock py-3 sm:py-4 text-lg sm:text-xl md:text-2xl focus:border-cinnabar outline-none transition-all"
                 />
-                <label htmlFor="email" className="absolute left-0 top-4 text-washi/20 pointer-events-none transition-all peer-focus:-top-6 peer-focus:text-cinnabar peer-focus:text-sm peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-sm">YOUR EMAIL</label>
+                <label htmlFor="email" className="absolute left-0 top-3 sm:top-4 text-washi/20 pointer-events-none transition-all peer-focus:-top-6 peer-focus:text-cinnabar peer-focus:text-xs sm:peer-focus:text-sm peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-xs sm:peer-[:not(:placeholder-shown)]:text-sm">YOUR EMAIL</label>
               </div>
 
               <div className="relative">
-                <textarea 
+                <textarea
                   name="message"
                   id="message"
                   required
                   placeholder=" "
                   rows={3}
-                  className="peer w-full bg-transparent border-b-2 border-woodblock py-4 text-2xl focus:border-cinnabar outline-none transition-all resize-none"
+                  className="peer w-full bg-transparent border-b-2 border-woodblock py-3 sm:py-4 text-lg sm:text-xl md:text-2xl focus:border-cinnabar outline-none transition-all resize-none"
                 ></textarea>
-                <label htmlFor="message" className="absolute left-0 top-4 text-washi/20 pointer-events-none transition-all peer-focus:-top-6 peer-focus:text-cinnabar peer-focus:text-sm peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-sm">YOUR MESSAGE</label>
+                <label htmlFor="message" className="absolute left-0 top-3 sm:top-4 text-washi/20 pointer-events-none transition-all peer-focus:-top-6 peer-focus:text-cinnabar peer-focus:text-xs sm:peer-focus:text-sm peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-xs sm:peer-[:not(:placeholder-shown)]:text-sm">YOUR MESSAGE</label>
               </div>
             </div>
-            
-            <div className="space-y-4">
-              <button 
+
+            <div className="space-y-3 sm:space-y-4">
+              <button
                 type="submit"
                 disabled={isSending}
-                className="group flex items-center gap-8 text-cinnabar font-bold uppercase tracking-generous text-xl hover:gap-12 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="group flex items-center gap-4 sm:gap-6 md:gap-8 text-cinnabar font-bold uppercase tracking-generous text-base sm:text-lg md:text-xl hover:gap-8 sm:hover:gap-10 md:hover:gap-12 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isSending ? 'SENDING...' : 'SEND MESSAGE'} <span className="text-4xl">→</span>
+                {isSending ? 'SENDING...' : 'SEND MESSAGE'} <span className="text-2xl sm:text-3xl md:text-4xl">→</span>
               </button>
 
               {status.type && (
-                <p className={`text-sm font-bold uppercase tracking-wider ${status.type === 'success' ? 'text-green-500' : 'text-cinnabar'}`}>
+                <p className={`text-xs sm:text-sm font-bold uppercase tracking-wider ${status.type === 'success' ? 'text-green-500' : 'text-cinnabar'}`}>
                   {status.message}
                 </p>
               )}

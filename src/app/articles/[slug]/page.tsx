@@ -30,7 +30,7 @@ export default function ArticlePage({ params }: { params: Promise<{ slug: string
 
   if (loading) {
     return (
-      <div className="min-h-screen pattern-bg flex items-center justify-center">
+      <div className="min-h-screen w-full max-w-full overflow-x-hidden pattern-bg flex items-center justify-center">
         <div className="text-cinnabar text-2xl font-bold animate-pulse">LOADING...</div>
       </div>
     );
@@ -38,9 +38,9 @@ export default function ArticlePage({ params }: { params: Promise<{ slug: string
 
   if (!article) {
     return (
-      <div className="min-h-screen pattern-bg flex flex-col items-center justify-center space-y-8">
+      <div className="min-h-screen w-full max-w-full overflow-x-hidden pattern-bg flex flex-col items-center justify-center space-y-8">
         <h1 className="text-4xl font-bold text-washi">Article not found</h1>
-        <button 
+        <button
           onClick={() => router.push('/articles')}
           className="px-8 py-3 bg-cinnabar text-washi font-bold"
         >
@@ -51,9 +51,9 @@ export default function ArticlePage({ params }: { params: Promise<{ slug: string
   }
 
   return (
-    <div className="min-h-screen pattern-bg selection:bg-cinnabar selection:text-washi">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden pattern-bg selection:bg-cinnabar selection:text-washi">
       <Header />
-      <main className=" mx-auto px-6 sm:px-12 lg:px-16 space-y-12">
+      <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 space-y-12">
         <ArticleDetail article={article} onBack={() => router.push('/articles')} />
       </main>
       <Footer />

@@ -19,20 +19,20 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects, onSe
     : displayProjects.filter(p => p.category === filter);
 
   return (
-    <section id="projects" className="space-y-12">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-woodblock pb-6">
+    <section id="projects" className="space-y-8 sm:space-y-10 md:space-y-12">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 border-b border-woodblock pb-4 sm:pb-6">
         <div>
-          <h3 className="text-3xl font-bold tracking-generous text-washi mb-2">
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-generous text-washi mb-2">
             FEATURED <span className="text-cinnabar">PROJECTS</span>
           </h3>
-          <p className="text-washi/50 text-sm">Selected works that define my engineering philosophy.</p>
+          <p className="text-washi/50 text-xs sm:text-sm">Selected works that define my engineering philosophy.</p>
         </div>
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4">
           {categories.map(cat => (
             <button
               key={cat}
               onClick={() => setFilter(cat)}
-              className={`text-[10px] uppercase tracking-generous px-3 py-1 transition-all ${
+              className={`text-[9px] sm:text-[10px] uppercase tracking-generous px-2 sm:px-3 py-1 transition-all ${
                 filter === cat ? 'bg-cinnabar text-washi' : 'bg-woodblock/50 text-washi/40 hover:text-washi'
               }`}
             >
@@ -42,7 +42,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects, onSe
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
         {filteredProjects.map((project) => (
           <div 
             key={project.id} 
@@ -63,14 +63,14 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects, onSe
                 {project.status}
               </div>
             </div>
-            <div className="p-6 grow space-y-4">
-              <h4 className="text-xl font-bold text-washi group-hover:text-cinnabar transition-colors">{project.title}</h4>
-              <p className="text-washi/60 text-sm leading-relaxed line-clamp-2">
+            <div className="p-4 sm:p-5 md:p-6 grow space-y-3 sm:space-y-4">
+              <h4 className="text-lg sm:text-xl font-bold text-washi group-hover:text-cinnabar transition-colors">{project.title}</h4>
+              <p className="text-washi/60 text-xs sm:text-sm leading-relaxed line-clamp-2">
                 {project.description}
               </p>
-              <div className="flex flex-wrap gap-2 pt-2">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-2">
                 {project.tags?.map(tag => (
-                  <span key={tag} className="text-[10px] text-washi/40 border border-woodblock px-2 py-0.5 tracking-wider">
+                  <span key={tag} className="text-[9px] sm:text-[10px] text-washi/40 border border-woodblock px-1.5 sm:px-2 py-0.5 tracking-wider">
                     #{tag}
                   </span>
                 ))}
