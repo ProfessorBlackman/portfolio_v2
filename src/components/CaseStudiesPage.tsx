@@ -46,17 +46,17 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ caseStudies, o
 
   const filteredStudies = useMemo(() => {
     return displayCaseStudies.filter(cs => {
-      const matchesSearch = cs.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      const matchesSearch = cs.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                             (cs.subtitle?.toLowerCase().includes(searchQuery.toLowerCase()) || false) ||
-                            (Array.isArray(cs.overview) ? cs.overview.some(p => {
+                            (Array.isArray(cs.overview) && cs.overview.some(p => {
                               if (typeof p === 'string') return p.toLowerCase().includes(searchQuery.toLowerCase());
                               if (p && typeof p === 'object' && 'children' in p && Array.isArray(p.children)) {
-                                return p.children.some((child: any) => 
+                                return p.children.some((child: any) =>
                                   typeof child.text === 'string' && child.text.toLowerCase().includes(searchQuery.toLowerCase())
                                 );
                               }
                               return false;
-                            }) : typeof cs.overview === 'string' && (cs.overview as string).toLowerCase().includes(searchQuery.toLowerCase()));
+                            }));
       const matchesTag = !activeTag || cs.tags?.includes(activeTag);
       return matchesSearch && matchesTag;
     });

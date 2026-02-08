@@ -75,4 +75,20 @@ export const PortableComponents: Partial<PortableTextReactComponents> = {
             <li className="mb-2">{children}</li>
         ),
     },
+    marks: {
+        link: ({children, value}: { children?: React.ReactNode; value?: { href: string } }) => {
+            const rel = !value?.href.startsWith('/') ? 'noreferrer noopener' : undefined;
+            const target = !value?.href.startsWith('/') ? '_blank' : undefined;
+            return (
+                <a
+                    href={value?.href}
+                    rel={rel}
+                    target={target}
+                    className="text-cinnabar underline hover:text-cinnabar/80 transition-colors font-medium"
+                >
+                    {children}
+                </a>
+            );
+        },
+    },
 }

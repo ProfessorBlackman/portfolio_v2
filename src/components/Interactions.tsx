@@ -155,7 +155,7 @@ export const Interactions: React.FC<{ contentId: string }> = ({ contentId }) => 
             <span className="font-black text-xs tracking-generous">{dislikes} DISLIKES</span>
           </button>
         </div>
-        <p className="text-xs uppercase tracking-generous text-washi/20 italic">Share your thoughts below</p>
+        <p className="text-xs uppercase tracking-generous hidden lg:block text-washi/20 italic">Share your thoughts below</p>
       </div>
 
       {/* Comments */}

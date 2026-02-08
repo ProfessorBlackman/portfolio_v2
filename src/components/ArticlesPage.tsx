@@ -34,7 +34,9 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({ articles, onSelectAr
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isFilterOpen]);
 
-  const displayArticles = articles && articles.length > 0 ? articles : [];
+  const displayArticles = useMemo(() => {
+    return articles && articles.length > 0 ? articles : [];
+  }, [articles]);
 
   const categories = useMemo(() => ['All', ...Array.from(new Set(displayArticles.map(a => a.category).filter(Boolean) as string[]))], [displayArticles]);
   const allTags = useMemo(() => {
