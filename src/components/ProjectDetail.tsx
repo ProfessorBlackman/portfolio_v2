@@ -55,11 +55,36 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack })
             </div>
           </div>
 
+          {/* Key Features */}
+          {project.features && project.features.length > 0 && (
+            <div className="space-y-6 pt-8 border-t border-woodblock/30">
+              <h3 className="text-xs uppercase tracking-generous text-cinnabar font-bold">Key Features</h3>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {project.features.map((feature, idx) => (
+                  <li key={idx} className="flex items-start gap-3 text-washi/70">
+                    <span className="text-cinnabar mt-1">▹</span>
+                    <span className="text-base leading-relaxed">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Architecture */}
+          {project.architecture && (
+            <div className="space-y-6 pt-8 border-t border-woodblock/30">
+              <h3 className="text-xs uppercase tracking-generous text-cinnabar font-bold">Architecture</h3>
+              <div className="text-base text-washi/70 leading-relaxed whitespace-pre-line">
+                {project.architecture}
+              </div>
+            </div>
+          )}
+
           {/* Project Media Gallery */}
           {project.media && project.media.length > 0 && (
             <div className="space-y-12 pt-12 border-t border-woodblock">
               <h3 className="text-2xl font-black text-washi tracking-tighter uppercase">Media Gallery</h3>
-              <div className="grid grid-cols-1 gap-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {project.media.map((item, idx) => (
 
                   <figure key={idx} className="space-y-4 group">
@@ -90,16 +115,71 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack })
 
         <div className="lg:col-span-5 space-y-12 lg:sticky lg:top-32 h-fit">
           <div className="bg-woodblock/10 p-10 border-l-4 border-cinnabar space-y-10">
-            <div className="space-y-4">
-              <h3 className="text-xs uppercase tracking-generous text-washi/30 font-bold">Technologies</h3>
-              <div className="flex flex-wrap gap-2">
-                {(project.tags || []).map(tech => (
-                  <span key={tech} className="px-4 py-2 bg-sumi border border-woodblock/40 text-sm font-bold text-washi/70 tracking-widest">
-                    {tech}
-                  </span>
-                ))}
+            {/* Tech Stack */}
+            {project.techStack ? (
+              <div className="space-y-6">
+                <h3 className="text-xs uppercase tracking-generous text-washi/30 font-bold">Tech Stack</h3>
+                {project.techStack.frontend && project.techStack.frontend.length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="text-[10px] uppercase tracking-widest text-cinnabar/60 font-bold">Frontend</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {project.techStack.frontend.map(tech => (
+                        <span key={tech} className="px-3 py-1.5 bg-sumi border border-woodblock/40 text-xs font-bold text-washi/70 tracking-wide">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {project.techStack.backend && project.techStack.backend.length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="text-[10px] uppercase tracking-widest text-cinnabar/60 font-bold">Backend</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {project.techStack.backend.map(tech => (
+                        <span key={tech} className="px-3 py-1.5 bg-sumi border border-woodblock/40 text-xs font-bold text-washi/70 tracking-wide">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {project.techStack.database && project.techStack.database.length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="text-[10px] uppercase tracking-widest text-cinnabar/60 font-bold">Database</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {project.techStack.database.map(tech => (
+                        <span key={tech} className="px-3 py-1.5 bg-sumi border border-woodblock/40 text-xs font-bold text-washi/70 tracking-wide">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {project.techStack.others && project.techStack.others.length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="text-[10px] uppercase tracking-widest text-cinnabar/60 font-bold">Others</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {project.techStack.others.map(tech => (
+                        <span key={tech} className="px-3 py-1.5 bg-sumi border border-woodblock/40 text-xs font-bold text-washi/70 tracking-wide">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
+            ) : (
+              <div className="space-y-4">
+                <h3 className="text-xs uppercase tracking-generous text-washi/30 font-bold">Technologies</h3>
+                <div className="flex flex-wrap gap-2">
+                  {(project.tags || []).map(tech => (
+                    <span key={tech} className="px-4 py-2 bg-sumi border border-woodblock/40 text-sm font-bold text-washi/70 tracking-widest">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="grid grid-cols-2 gap-8">
                {project.githubUrl && (

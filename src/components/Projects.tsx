@@ -25,7 +25,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects, onSe
           <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-generous text-washi mb-2">
             FEATURED <span className="text-cinnabar">PROJECTS</span>
           </h3>
-          <p className="text-washi/50 text-xs sm:text-sm">Selected works that define my engineering philosophy.</p>
+          <p className="text-washi/50 text-xs sm:text-sm">Selected works that define my engineering philosophy. (Click any to view in detail)</p>
         </div>
         <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4">
           {categories.map(cat => (
@@ -51,8 +51,8 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects, onSe
           >
             <div className="aspect-video relative overflow-hidden">
               <Image 
-                src={project.image} 
-                alt={project.title} 
+                src={project.image || ""}
+                alt={project.title}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110 grayscale hover:grayscale-0 opacity-80"
                 sizes="(max-width: 768px) 100vw, 50vw"
