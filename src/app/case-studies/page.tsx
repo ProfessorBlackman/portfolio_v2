@@ -7,6 +7,7 @@ import { Footer } from '@/components/Footer';
 import { useRouter } from 'next/navigation';
 import { CaseStudy } from '@/lib/types';
 import { sanityService } from '@/lib/sanity/lib/service';
+import { incrementViews } from '@/lib/firebase/interactions';
 
 export default function CaseStudies() {
   const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
@@ -27,6 +28,7 @@ export default function CaseStudies() {
   }, []);
 
   const handleSelectCaseStudy = (study: CaseStudy) => {
+    incrementViews(study._id);
     router.push(`/case-studies/${study.slug || study._id}`);
   };
 

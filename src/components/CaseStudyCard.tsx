@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { CaseStudy } from '@/lib/types';
 import { PortableText } from 'next-sanity';
 import { PortableComponents } from './blog/portable-components';
+import { subscribeToInteractions, InteractionData } from '@/lib/firebase/interactions';
+import { Eye } from 'lucide-react';
 
 interface CaseStudyCardProps {
   study: CaseStudy;
@@ -10,6 +12,15 @@ interface CaseStudyCardProps {
 }
 
 export const CaseStudyCard: React.FC<CaseStudyCardProps> = ({ study, onSelect }) => {
+  const [interactions, setInteractions] = useState<InteractionData | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = subscribeToInteractions(study._id, (data) => {
+      setInteractions(data);
+    });
+    return () => unsubscribe();
+  }, [study._id]);
+
   return (
     <div 
       className="group grid grid-cols-1 md:grid-cols-12 gap-0 bg-woodblock/70 border border-woodblock/70 hover:border-cinnabar transition-all cursor-pointer overflow-hidden rounded-md"
@@ -31,6 +42,11 @@ export const CaseStudyCard: React.FC<CaseStudyCardProps> = ({ study, onSelect })
             <span>{study.duration}</span>
             <span className="w-2 h-px bg-woodblock"></span>
             <span className="text-washi/40">{study.client}</span>
+            <span className="w-2 h-px bg-woodblock"></span>
+            <span className="text-washi/40 flex items-center gap-1.5">
+              <Eye className="w-3.5 h-3.5" />
+              {interactions?.views || 0} reads
+            </span>
           </div>
           <h3 className="text-3xl font-black text-washi leading-tight tracking-tighter group-hover:text-cinnabar transition-colors">
             {study.title}

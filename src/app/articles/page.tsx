@@ -7,6 +7,7 @@ import { Footer } from '@/components/Footer';
 import { useRouter } from 'next/navigation';
 import { Article } from '@/lib/types';
 import { sanityService } from '@/lib/sanity/lib/service';
+import { incrementViews } from '@/lib/firebase/interactions';
 
 export default function Articles() {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -25,6 +26,7 @@ export default function Articles() {
   }, []);
 
   const handleSelectArticle = (article: Article) => {
+    incrementViews(article._id);
     router.push(`/articles/${article.slug || article._id}`);
   };
 

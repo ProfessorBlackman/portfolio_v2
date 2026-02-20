@@ -1,12 +1,64 @@
 
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { Article } from '@/lib/types';
-import { Filter, X } from 'lucide-react';
+import { Filter, X, Eye } from 'lucide-react';
+import { subscribeToInteractions, InteractionData } from '@/lib/firebase/interactions';
 
 interface ArticlesPageProps {
   articles?: Article[];
   onSelectArticle: (article: Article) => void;
 }
+
+const ArticleCard: React.FC<{ article: Article, onSelect: (a: Article) => void, activeTag: string | null }> = ({ article, onSelect, activeTag }) => {
+  const [interactions, setInteractions] = useState<InteractionData | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = subscribeToInteractions(article._id, (data) => {
+      setInteractions(data);
+    });
+    return () => unsubscribe();
+  }, [article._id]);
+
+  return (
+    <article 
+      className="group cursor-pointer space-y-6 bg-woodblock/70 p-10 border border-woodblock/70 hover:border-cinnabar transition-all hover:bg-woodblock/20 rounded-md"
+      onClick={() => onSelect(article)}
+    >
+      <div className="flex flex-wrap items-center gap-4 text-xs font-bold uppercase tracking-widest">
+        <span className="px-3 py-1 bg-washi/10 text-washi rounded-full">
+          {article.category}
+        </span>
+        <span className="text-washi/40 flex items-center gap-2">
+           📅 {article.publishedAt}
+        </span>
+        <span className="text-washi/40 flex items-center gap-2 border-l border-woodblock/40 pl-4">
+           <Eye className="w-4 h-4" /> {interactions?.views || 0} reads
+        </span>
+      </div>
+      
+      <h3 className="text-3xl font-bold text-washi leading-tight group-hover:text-cinnabar transition-colors">
+        {article.title}
+      </h3>
+      
+      <p className="text-lg text-washi/60 leading-relaxed line-clamp-3">
+        {article.excerpt}
+      </p>
+      
+      <div className="flex flex-wrap gap-3">
+        {article.tags?.map(tag => (
+          <span 
+            key={tag} 
+            className={`text-[11px] uppercase tracking-widest font-bold px-3 py-1 rounded-md border transition-colors ${
+              activeTag === tag ? 'bg-cinnabar border-cinnabar text-washi' : 'bg-washi/5 border-woodblock text-washi/40'
+            }`}
+          >
+            #{tag}
+          </span>
+        ))}
+      </div>
+    </article>
+  );
+};
 
 export const ArticlesPage: React.FC<ArticlesPageProps> = ({ articles, onSelectArticle }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -160,41 +212,12 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({ articles, onSelectAr
         {/* Main Content: Article List */}
         <div className="lg:col-span-8 space-y-8">
           {filteredArticles.length > 0 ? filteredArticles.map((article) => (
-            <article 
-              key={article._id}
-              className="group cursor-pointer space-y-6 bg-woodblock/70 p-10 border border-woodblock/70 hover:border-cinnabar transition-all hover:bg-woodblock/20 rounded-md"
-              onClick={() => onSelectArticle(article)}
-            >
-              <div className="flex flex-wrap items-center gap-4 text-xs font-bold uppercase tracking-widest">
-                <span className="px-3 py-1 bg-washi/10 text-washi rounded-full">
-                  {article.category}
-                </span>
-                <span className="text-washi/40 flex items-center gap-2">
-                   📅 {article.publishedAt}
-                </span>
-              </div>
-              
-              <h3 className="text-3xl font-bold text-washi leading-tight group-hover:text-cinnabar transition-colors">
-                {article.title}
-              </h3>
-              
-              <p className="text-lg text-washi/60 leading-relaxed line-clamp-3">
-                {article.excerpt}
-              </p>
-              
-              <div className="flex flex-wrap gap-3">
-                {article.tags?.map(tag => (
-                  <span 
-                    key={tag} 
-                    className={`text-[11px] uppercase tracking-widest font-bold px-3 py-1 rounded-md border transition-colors ${
-                      activeTag === tag ? 'bg-cinnabar border-cinnabar text-washi' : 'bg-washi/5 border-woodblock text-washi/40'
-                    }`}
-                  >
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-            </article>
+            <ArticleCard 
+              key={article._id} 
+              article={article} 
+              onSelect={onSelectArticle} 
+              activeTag={activeTag} 
+            />
           )) : (
             <div className="py-20 text-center bg-woodblock/5 rounded-md border border-dashed border-woodblock">
               <p className="text-2xl text-washi/40 italic">No articles match your search criteria.</p>

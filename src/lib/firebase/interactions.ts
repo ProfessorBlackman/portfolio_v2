@@ -45,6 +45,7 @@ export interface Comment {
 export interface InteractionData {
   likes: number;
   dislikes: number;
+  views: number;
   userReactions: { [userId: string]: 'like' | 'dislike' };
 }
 
@@ -54,11 +55,18 @@ export const getInteractions = async (contentId: string): Promise<InteractionDat
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    return docSnap.data() as InteractionData;
+    const data = docSnap.data();
+    return {
+      likes: data.likes || 0,
+      dislikes: data.dislikes || 0,
+      views: data.views || 0,
+      userReactions: data.userReactions || {},
+    } as InteractionData;
   } else {
     const initialData: InteractionData = {
       likes: 0,
       dislikes: 0,
+      views: 0,
       userReactions: {},
     };
     await setDoc(docRef, initialData);
@@ -75,11 +83,18 @@ export const subscribeToInteractions = (
 
   return onSnapshot(docRef, (docSnap) => {
     if (docSnap.exists()) {
-      callback(docSnap.data() as InteractionData);
+      const data = docSnap.data();
+      callback({
+        likes: data.likes || 0,
+        dislikes: data.dislikes || 0,
+        views: data.views || 0,
+        userReactions: data.userReactions || {},
+      });
     } else {
       callback({
         likes: 0,
         dislikes: 0,
+        views: 0,
         userReactions: {},
       });
     }
@@ -99,6 +114,7 @@ export const updateReaction = async (
     await setDoc(docRef, {
       likes: 0,
       dislikes: 0,
+      views: 0,
       userReactions: {},
     });
   }
@@ -106,6 +122,7 @@ export const updateReaction = async (
   const currentData = docSnap.exists() ? (docSnap.data() as InteractionData) : {
     likes: 0,
     dislikes: 0,
+    views: 0,
     userReactions: {},
   };
 
@@ -213,4 +230,23 @@ export const formatCommentDate = (timestamp: Timestamp): string => {
   if (diffInDays < 7) return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
 
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+};
+
+// Increment view count for a content item
+export const incrementViews = async (contentId: string): Promise<void> => {
+  const docRef = doc(db, 'interactions', contentId);
+  const docSnap = await getDoc(docRef);
+
+  if (!docSnap.exists()) {
+    await setDoc(docRef, {
+      likes: 0,
+      dislikes: 0,
+      views: 1,
+      userReactions: {},
+    });
+  } else {
+    await updateDoc(docRef, {
+      views: increment(1),
+    });
+  }
 };
