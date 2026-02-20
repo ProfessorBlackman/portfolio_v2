@@ -61,7 +61,7 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
 
   return (
     <div className="py-20 pt-32 sm:py-24 sm:pt-28 md:py-28 lg:py-32 animate-in fade-in duration-700">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-8xl mx-auto">
       <div className="lg:grid lg:grid-cols-12 lg:gap-16">
         {/* Main Content */}
         <div className="lg:col-span-9 space-y-16 sm:space-y-20 md:space-y-24">
