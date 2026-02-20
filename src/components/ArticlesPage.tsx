@@ -70,13 +70,13 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({ articles, onSelectAr
         <div className="flex gap-3">
           {/* Search Bar */}
           <div className="flex-1 relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-washi/30">🔍</span>
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-washi/60">🔍</span>
             <input
               type="text"
               placeholder="Search posts..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-woodblock/70 border border-woodblock/40 p-4 pl-12 text-sm text-washi focus:border-cinnabar outline-none transition-all placeholder:text-washi/20 rounded-sm"
+              className="w-full bg-woodblock/90 border border-woodblock/90 p-4 pl-12 text-sm text-washi focus:border-cinnabar outline-none transition-all placeholder:text-washi/20 rounded-sm"
             />
           </div>
 
@@ -84,7 +84,7 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({ articles, onSelectAr
           <button
             ref={filterButtonRef}
             onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className="px-4 py-4 bg-woodblock/70 border border-woodblock/40 text-washi hover:text-cinnabar hover:border-cinnabar transition-all rounded-sm flex items-center gap-2"
+            className="px-4 py-4 bg-woodblock/90 border border-woodblock/90 text-washi hover:text-cinnabar hover:border-cinnabar transition-all rounded-sm flex items-center gap-2"
           >
             {isFilterOpen ? <X className="w-5 h-5" /> : <Filter className="w-5 h-5" />}
           </button>

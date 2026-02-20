@@ -20,7 +20,7 @@ export const CaseStudyCard: React.FC<CaseStudyCardProps> = ({ study, onSelect })
           src={study.coverImage} 
           alt={study.title} 
           fill
-          className="object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 scale-105 group-hover:scale-100"
+          className="object-cover grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 scale-105 group-hover:scale-100"
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 33vw, 25vw"
         />
         <div className="absolute inset-0 bg-sumi/20 group-hover:bg-transparent transition-colors z-10"></div>

@@ -68,7 +68,7 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ caseStudies, o
         <h2 className="text-7xl font-black tracking-tighter text-washi uppercase">
           Case <span className="text-cinnabar">Studies</span>
         </h2>
-        <p className="text-2xl text-washi/60 max-w-3xl leading-relaxed font-light border-l-4 border-woodblock pl-8">
+        <p className="text-2xl text-washi/70 max-w-3xl leading-relaxed font-light border-l-4 border-woodblock pl-8">
           Deep dives into complex engineering problems, architectural trade-offs, and measurable outcomes in real-world environments.
         </p>
       </div>
@@ -78,13 +78,13 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ caseStudies, o
         <div className="flex gap-3">
           {/* Search Bar */}
           <div className="flex-1 relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-washi/30">🔍</span>
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-washi/70">🔍</span>
             <input
               type="text"
               placeholder="Search case studies..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-woodblock/70 border border-woodblock/40 p-4 pl-12 text-sm text-washi focus:border-cinnabar outline-none transition-all placeholder:text-washi/20 rounded-sm"
+              className="w-full bg-woodblock/90 border border-woodblock/90 p-4 pl-12 text-sm text-washi focus:border-cinnabar outline-none transition-all placeholder:text-washi/20 rounded-sm"
             />
           </div>
 
@@ -92,7 +92,7 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ caseStudies, o
           <button
             ref={filterButtonRef}
             onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className="px-4 py-4 bg-woodblock/70 border border-woodblock/40 text-washi hover:text-cinnabar hover:border-cinnabar transition-all rounded-sm flex items-center gap-2"
+            className="px-4 py-4 bg-woodblock/90 border border-woodblock/90 text-washi hover:text-cinnabar hover:border-cinnabar transition-all rounded-sm flex items-center gap-2"
           >
             {isFilterOpen ? <X className="w-5 h-5" /> : <Filter className="w-5 h-5" />}
           </button>
@@ -114,7 +114,7 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ caseStudies, o
                     setIsFilterOpen(false);
                   }}
                   className={`px-3 py-2 text-[10px] font-bold uppercase tracking-widest rounded transition-all border ${
-                    !activeTag ? 'bg-cinnabar border-cinnabar text-washi' : 'bg-woodblock/30 border-woodblock/40 text-washi/40 hover:border-washi/60'
+                    !activeTag ? 'bg-cinnabar border-cinnabar text-washi' : 'bg-woodblock/80 border-woodblock/40 text-washi/60 hover:border-washi/80'
                   }`}
                 >
                   All Areas
