@@ -71,7 +71,7 @@ export const CaseStudyNav: React.FC<CaseStudyNavProps> = ({ sections }) => {
   if (visibleSections.length === 0) return null;
 
   return (
-    <nav className="hidden lg:block sticky top-32 space-y-4">
+    <nav className="hidden lg:block space-y-4">
       <div className="flex items-start gap-6">
         {/* Vertical Progress Bar */}
         <div className="relative w-1 bg-woodblock/30 rounded-full overflow-hidden" style={{ height: `${Math.max(visibleSections.length * 40, 300)}px` }}>

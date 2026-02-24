@@ -329,9 +329,11 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ study, onBack 
         </div>
 
         {/* Sticky Navigation Sidebar */}
-        <div className="hidden lg:block lg:col-span-3 ml-20 mt-12">
-          <CaseStudyNav sections={navSections} />
-        </div>
+        <aside className="hidden lg:block lg:col-span-3 ml-20 mt-12 relative">
+          <div className="fixed top-32">
+            <CaseStudyNav sections={navSections} />
+          </div>
+        </aside>
       </div>
       </div>
     </div>
