@@ -41,18 +41,22 @@ export const PortableComponents: Partial<PortableTextReactComponents> = {
         },
     },
     block: {
-        h1: ({children}: { children?: React.ReactNode }) => (
-            <h1 className="text-4xl font-bold my-6">{children}</h1>
-        ),
-        h2: ({children}: { children?: React.ReactNode }) => (
-            <h2 className="text-3xl font-bold my-5">{children}</h2>
-        ),
-        h3: ({children}: { children?: React.ReactNode }) => (
-            <h3 className="text-2xl font-bold my-4">{children}</h3>
-        ),
-        h4: ({children}: { children?: React.ReactNode }) => (
-            <h4 className="text-xl font-bold my-3">{children}</h4>
-        ),
+        h1: ({children, value}: { children?: React.ReactNode, value: any }) => {
+            const id = value.children?.[0]?.text?.toLowerCase().replace(/\s+/g, '-') || '';
+            return <h1 id={id} className="text-4xl font-bold my-6 scroll-mt-32">{children}</h1>;
+        },
+        h2: ({children, value}: { children?: React.ReactNode, value: any }) => {
+            const id = value.children?.[0]?.text?.toLowerCase().replace(/\s+/g, '-') || '';
+            return <h2 id={id} className="text-3xl font-bold my-5 scroll-mt-32">{children}</h2>;
+        },
+        h3: ({children, value}: { children?: React.ReactNode, value: any }) => {
+            const id = value.children?.[0]?.text?.toLowerCase().replace(/\s+/g, '-') || '';
+            return <h3 id={id} className="text-2xl font-bold my-4 scroll-mt-32">{children}</h3>;
+        },
+        h4: ({children, value}: { children?: React.ReactNode, value: any }) => {
+            const id = value.children?.[0]?.text?.toLowerCase().replace(/\s+/g, '-') || '';
+            return <h4 id={id} className="text-xl font-bold my-3 scroll-mt-32">{children}</h4>;
+        },
         blockquote: ({children}: { children?: React.ReactNode }) => (
             <blockquote className="border-l-4 border-gray-400 pl-4 my-6 italic">
                 {children}
