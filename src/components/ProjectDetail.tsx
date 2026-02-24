@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { Project } from '@/lib/types';
+import {OkuafoPa} from "ghicons";
 
 interface ProjectDetailProps {
   project: Project;
@@ -205,9 +206,9 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack })
             </div>
           </div>
 
-          <div className="kanji-accent text-cinnabar/10 text-[15rem] leading-none select-none text-right">
-            作品
-          </div>
+          {/*<div className="kanji-accent opacity-15 text-cinnabar/10 text-[15rem] leading-none select-none text-right">*/}
+          {/*  <OkuafoPa size={500} color="#fff" />*/}
+          {/*</div>*/}
         </div>
       </div>
     </div>

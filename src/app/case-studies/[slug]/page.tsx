@@ -30,7 +30,7 @@ export default function CaseStudyPage({ params }: { params: Promise<{ slug: stri
 
   if (loading) {
     return (
-      <div className="min-h-screen w-full max-w-full overflow-x-hidden pattern-bg flex items-center justify-center">
+      <div className="min-h-screen w-full max-w-full pattern-bg flex items-center justify-center">
         <div className="text-cinnabar text-2xl font-bold animate-pulse">LOADING...</div>
       </div>
     );
@@ -38,7 +38,7 @@ export default function CaseStudyPage({ params }: { params: Promise<{ slug: stri
 
   if (!study) {
     return (
-      <div className="min-h-screen w-full max-w-full overflow-x-hidden pattern-bg flex flex-col items-center justify-center space-y-8">
+      <div className="min-h-screen w-full max-w-full pattern-bg flex flex-col items-center justify-center space-y-8">
         <h1 className="text-4xl font-bold text-washi">Case Study not found</h1>
         <button
           onClick={() => router.push('/case-studies')}
@@ -51,7 +51,7 @@ export default function CaseStudyPage({ params }: { params: Promise<{ slug: stri
   }
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-hidden pattern-bg selection:bg-cinnabar selection:text-washi">
+    <div className="min-h-screen w-full max-w-full pattern-bg selection:bg-cinnabar selection:text-washi">
       <Header />
       <main className="w-full max-w-7xl lg:max-w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 space-y-12">
         <CaseStudyDetail study={study} onBack={() => router.push('/case-studies')} />
