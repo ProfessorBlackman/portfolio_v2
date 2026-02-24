@@ -3,6 +3,7 @@
 
 import React, { useState } from 'react';
 import { Experience } from '@/lib/types';
+import {Sankofa, Sankofa1} from "ghicons";
 
 interface ExperienceSectionProps {
   experiences?: Experience[];
@@ -29,7 +30,10 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experience
         <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-generous text-washi">
           WORK <span className="text-cinnabar">EXPERIENCE</span>
         </h3>
-        <span className="text-woodblock text-2xl sm:text-3xl md:text-4xl font-black select-none hidden sm:block">履歴</span>
+        <span className="text-woodblock opacity-35 text-2xl sm:text-3xl md:text-4xl font-black select-none hidden sm:flex">
+          <Sankofa size={32} color="#fff" />
+          <Sankofa1 size={32} color="#fff" />
+        </span>
       </div>
 
       <div className="space-y-6 sm:space-y-8">

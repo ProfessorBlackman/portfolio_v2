@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Profile } from '@/lib/types';
+import {AnanseNtontan, Aya} from "ghicons";
 
 interface HeroProps {
   profile?: Profile | null;
@@ -46,7 +47,8 @@ export const Hero: React.FC<HeroProps> = ({ profile }) => {
 
       {/* Visual background Kanji for 'Clarity' or 'Structure' */}
       <div className="absolute top-1/2 right-0 -translate-y-1/2 opacity-5 pointer-events-none text-[20rem] lg:text-[30rem] font-serif select-none hidden md:block">
-        構
+        <Aya size={500} color="#fff" />
+        <AnanseNtontan size={500} color="#fff" />
       </div>
     </section>
   );
