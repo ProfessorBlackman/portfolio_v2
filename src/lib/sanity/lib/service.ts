@@ -1,5 +1,5 @@
 import { client } from './client';
-import { Project, Article, CaseStudy, Experience, Skill, Profile, Education } from '@/lib/types';
+import { Project, Article, CaseStudy, Experience, Skill, Profile, Education, WritingSummary, LabItem } from '@/lib/types';
 import { groq } from 'next-sanity';
 
 export class SanityService {
@@ -239,6 +239,48 @@ export class SanityService {
       type,
       description,
       certificateUrl
+    }`);
+  }
+
+  async getArticleSummaries(): Promise<WritingSummary[]> {
+    return client.fetch(groq`*[_type == "post" || _type == "article"] | order(publishedAt desc, date desc) {
+      _id,
+      _type,
+      title,
+      "slug": coalesce(slug.current, _id),
+      excerpt,
+      category,
+      duration,
+      "date": coalesce(publishedAt, date),
+      tags
+    }`);
+  }
+
+  async getCaseStudySummaries(): Promise<WritingSummary[]> {
+    return client.fetch(groq`*[_type == "caseStudy"] | order(date desc) {
+      _id,
+      _type,
+      title,
+      "slug": slug.current,
+      "excerpt": coalesce(seoDescription, subtitle),
+      "category": "Case study",
+      duration,
+      date,
+      tags
+    }`);
+  }
+
+  async getLabItems(): Promise<LabItem[]> {
+    return client.fetch(groq`*[_type == "labItem"] | order(coalesce(date, _createdAt) desc) {
+      _id,
+      title,
+      "slug": slug.current,
+      status,
+      summary,
+      tags,
+      link,
+      repo,
+      date
     }`);
   }
 }

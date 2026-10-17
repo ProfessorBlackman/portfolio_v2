@@ -1,44 +1,33 @@
-'use client';
-
-import React, { useState, useEffect } from 'react';
-import { CaseStudiesPage } from '@/components/CaseStudiesPage';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
-import { useRouter } from 'next/navigation';
-import { CaseStudy } from '@/lib/types';
+import type { Metadata } from 'next';
 import { sanityService } from '@/lib/sanity/lib/service';
-import { incrementViews } from '@/lib/firebase/interactions';
+import { WritingSummary } from '@/lib/types';
+import { PageIntro } from '@/components/PageIntro';
+import { WritingList } from '@/components/writing/WritingList';
+import { ArrowLink, Container } from '@/components/ui/primitives';
 
-export default function CaseStudies() {
-  const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
-  const router = useRouter();
+export const revalidate = 300;
 
-  useEffect(() => {
-    const fetchCaseStudies = async () => {
-      try {
-        const data = await sanityService.getCaseStudies();
-        setCaseStudies(data);
-        console.log("getCaseStudies");
-        console.log(data);
-      } catch (error) {
-        console.error('Error fetching case studies:', error);
-      }
-    };
-    fetchCaseStudies();
-  }, []);
+export const metadata: Metadata = {
+  title: 'Case Studies | Methuselah Nwodobeh',
+  description: 'In-depth engineering stories: the problem, the decisions, the trade-offs, and what was learned.',
+};
 
-  const handleSelectCaseStudy = (study: CaseStudy) => {
-    incrementViews(study._id);
-    router.push(`/case-studies/${study.slug || study._id}`);
-  };
+export default async function CaseStudiesIndex() {
+  const caseStudies = await sanityService.getCaseStudySummaries().catch(() => [] as WritingSummary[]);
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-hidden pattern-bg selection:bg-cinnabar selection:text-washi">
-      <Header />
-      <main className="w-full max-w-7xl lg:max-w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 space-y-12">
-        <CaseStudiesPage caseStudies={caseStudies} onSelectCaseStudy={handleSelectCaseStudy} />
-      </main>
-      <Footer />
-    </div>
+    <main>
+      <PageIntro
+        eyebrow="Writing / Case studies"
+        title="The full engineering story."
+        lede="The problem, the decisions, the trade-offs, and what was learned — with the evidence attached."
+      />
+      <Container className="pb-16 md:pb-24">
+        <WritingList items={caseStudies} emptyMessage="No case studies published yet." />
+        <ArrowLink href="/articles" className="mt-10">
+          All writing
+        </ArrowLink>
+      </Container>
+    </main>
   );
 }

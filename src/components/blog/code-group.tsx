@@ -1,59 +1,66 @@
 "use client";
 
-import { useState } from "react";
-import { codeToHtml, BundledLanguage } from "shiki";
+import { useEffect, useState } from "react";
+import type { BundledLanguage } from "shiki";
 import {CopyButton} from "@/components/blog/code-block-client";
+
 interface FileItem {
   filename: string;
   language: BundledLanguage;
   code: string;
 }
 
-export async function CodeGroup({ files }: { files: FileItem[] }) {
-  const initial = await Promise.all(
-    files.map(async (f) => ({
-      ...f,
-      html: await codeToHtml(f.code, {
-        lang: f.language,
-        themes: { light: "github-light", dark: "github-dark" },
-      }),
-    }))
-  );
-
-  return <CodeGroupClient files={initial} />;
-}
-
-function CodeGroupClient({ files }: { files: any[] }) {
+export function CodeGroup({ files }: { files: FileItem[] }) {
   const [active, setActive] = useState(0);
+  const [html, setHtml] = useState<(string | null)[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { codeToHtml } = await import("shiki");
+      const rendered = await Promise.all(
+        files.map((f) =>
+          codeToHtml(f.code, { lang: f.language, theme: "github-dark-default" }).catch(() => null)
+        )
+      );
+      if (!cancelled) setHtml(rendered);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [files]);
+
+  if (!files?.length) return null;
+  const current = files[active];
 
   return (
-    <div className="my-6 border rounded-lg bg-neutral-50 dark:bg-neutral-900 shadow-sm">
-      {/* Tabs */}
-      <div className="flex items-center gap-1 bg-neutral-100 dark:bg-neutral-800 border-b px-2">
+    <div className="on-dark my-8 bg-code text-paper">
+      <div className="flex items-center gap-1 border-b border-paper/10 px-2" role="tablist">
         {files.map((f, i) => (
           <button
-            key={i}
+            key={f.filename}
+            type="button"
+            role="tab"
+            aria-selected={i === active}
             onClick={() => setActive(i)}
-            className={`px-3 py-2 text-sm font-mono ${
-              i === active
-                ? "bg-white dark:bg-neutral-900 border-b-2 border-blue-500"
-                : "opacity-60"
+            className={`px-3 py-2.5 font-mono text-[11px] border-b-2 -mb-px transition-colors ${
+              i === active ? "border-signal text-paper" : "border-transparent text-paper/50 hover:text-paper/80"
             }`}
           >
             {f.filename}
           </button>
         ))}
-
-        <div className="ml-auto pr-2">
-          <CopyButton code={files[active].code} />
+        <div className="ml-auto">
+          <CopyButton code={current.code} />
         </div>
       </div>
-
-      {/* Code */}
-      <div
-        className="p-0"
-        dangerouslySetInnerHTML={{ __html: files[active].html }}
-      />
+      {html[active] ? (
+        <div className="code-surface text-[13px] leading-7" dangerouslySetInnerHTML={{ __html: html[active]! }} />
+      ) : (
+        <pre className="code-surface text-[13px] leading-7">
+          <code>{current.code}</code>
+        </pre>
+      )}
     </div>
   );
 }

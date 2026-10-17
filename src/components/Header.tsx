@@ -1,159 +1,146 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
-interface HeaderProps {
-  activeSection?: string;
-}
+const navItems = [
+  { name: 'Work', href: '/#work', match: ['/projects'] },
+  { name: 'Lab', href: '/lab', match: ['/lab'] },
+  { name: 'Writing', href: '/articles', match: ['/articles', '/case-studies'] },
+  { name: 'About', href: '/about', match: ['/about'] },
+];
 
-export const Header: React.FC<HeaderProps> = ({ activeSection }) => {
+export const Header: React.FC = () => {
   const pathname = usePathname();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // Close menu when clicking outside
+  const isActive = (match: string[]) => match.some((path) => pathname.startsWith(path));
+
   useEffect(() => {
+    if (!isMenuOpen) return;
+
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        isMobileMenuOpen &&
-        menuRef.current &&
-        buttonRef.current &&
-        !menuRef.current.contains(event.target as Node) &&
-        !buttonRef.current.contains(event.target as Node)
-      ) {
-        setIsMobileMenuOpen(false);
+      const target = event.target as Node;
+      if (!menuRef.current?.contains(target) && !buttonRef.current?.contains(target)) {
+        setIsMenuOpen(false);
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMenuOpen(false);
+        buttonRef.current?.focus();
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isMobileMenuOpen]);
-
-  const navItems = [
-    { name: 'About', id: 'about', type: 'home', path: '/#about' },
-    { name: 'Philosophy', id: 'philosophy', type: 'home', path: '/#philosophy' },
-    { name: 'Focus', id: 'focus', type: 'home', path: '/#focus' },
-    { name: 'Experience', id: 'experience', type: 'home', path: '/#experience' },
-    { name: 'Skills', id: 'skills', type: 'home', path: '/#skills' },
-    { name: 'Projects', id: 'projects', type: 'home', path: '/#projects' },
-    { name: 'Case Studies', id: 'case-studies', type: 'page', path: '/case-studies' },
-    { name: 'Articles', id: 'articles', type: 'page', path: '/articles' },
-    { name: 'Contact', id: 'contact', type: 'home', path: '/#contact' },
-  ];
-
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, item: typeof navItems[0]) => {
-    setIsMobileMenuOpen(false); // Close mobile menu on click
-    if (item.type === 'home' && pathname === '/') {
-      e.preventDefault();
-      const element = document.getElementById(item.id);
-      if (element) {
-        const offset = 80;
-        const bodyRect = document.body.getBoundingClientRect().top;
-        const elementRect = element.getBoundingClientRect().top;
-        const elementPosition = elementRect - bodyRect;
-        const offsetPosition = elementPosition - offset;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-
-        // Update URL hash without jumping
-        window.history.pushState(null, '', `#${item.id}`);
-      }
-    }
-  };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isMenuOpen]);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full max-w-full bg-sumi/90 backdrop-blur-xl border-b border-woodblock">
-      <div className="w-full max-w-7xl lg:max-w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative">
-        <div className="flex justify-between items-center h-24">
-          <div className="shrink-0 z-50">
-            <Link
-              href="/"
-              className="text-3xl font-black tracking-tighter text-washi cursor-pointer"
-              onClick={(e) => {
-                setIsMobileMenuOpen(false);
-                if (pathname === '/') {
-                  e.preventDefault();
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                  window.history.pushState(null, '', '/');
-                }
-              }}
-            >
-              M<span className="text-cinnabar">.</span>
-            </Link>
-          </div>
+    <header className="sticky top-0 z-50 w-full bg-paper/90 backdrop-blur-md border-b border-subtle">
+      <div className="w-full max-w-page mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16 md:h-[4.5rem]">
+          <Link href="/" className="group leading-tight" aria-label="Methuselah — home">
+            <span className="block text-[15px] font-semibold tracking-[0.04em] text-ink">
+              METHUSELAH<span className="group-hover:text-signal-ink transition-colors">.</span>
+            </span>
+            <span className="block font-mono text-[9px] uppercase tracking-[0.14em] text-muted">
+              <span className="hidden sm:inline">Software engineer / Product builder</span>
+              <span className="sm:hidden">Engineer / Builder</span>
+            </span>
+          </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex space-x-6 xl:space-x-10">
-            {navItems.map((item) => {
-              const isActive = (item.type === 'home' && pathname === '/' && activeSection === item.id) ||
-                (item.type === 'page' && pathname.startsWith(item.path));
-
-              return (
-                <Link
-                  key={item.id}
-                  href={item.path}
-                  onClick={(e) => handleNavClick(e, item)}
-                  className={`text-[10px] uppercase tracking-generous transition-all duration-300 hover:text-cinnabar hover:-translate-y-0.5 ${isActive ? 'text-cinnabar font-bold' : 'text-washi/40'
-                    }`}
-                >
-                  {item.name}
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* Mobile & Tablet Menu Button */}
-          <button
-            ref={buttonRef}
-            className="lg:hidden z-50 text-washi hover:text-cinnabar transition-colors flex items-center justify-center p-2"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? (
-              <X className="w-7 h-7 sm:w-8 sm:h-8" />
-            ) : (
-              <Menu className="w-7 h-7 sm:w-8 sm:h-8" />
-            )}
-          </button>
-        </div>
-
-        {/* Mobile & Tablet Menu Dropdown */}
-        {isMobileMenuOpen && (
-          <div
-            ref={menuRef}
-            className="absolute top-full left-0 right-0 bg-sumi border-b border-woodblock shadow-2xl lg:hidden animate-in slide-in-from-top-4 duration-300"
-          >
-            <nav className="flex flex-col py-6 max-h-[calc(100vh-6rem)] overflow-y-auto">
-              {navItems.map((item) => {
-                const isActive = (item.type === 'home' && pathname === '/' && activeSection === item.id) ||
-                  (item.type === 'page' && pathname.startsWith(item.path));
-
-                return (
+          <nav aria-label="Primary" className="hidden md:block">
+            <ul className="flex items-center gap-8">
+              {navItems.map((item) => (
+                <li key={item.name}>
                   <Link
-                    key={item.id}
-                    href={item.path}
-                    onClick={(e) => handleNavClick(e, item)}
-                    className={`px-6 py-4 text-base sm:text-lg uppercase tracking-widest transition-all duration-300 hover:bg-woodblock/30 hover:text-cinnabar border-l-4 ${
-                      isActive
-                        ? 'text-cinnabar font-bold border-cinnabar bg-woodblock/20'
-                        : 'text-white border-transparent'
+                    href={item.href}
+                    aria-current={isActive(item.match) ? 'page' : undefined}
+                    className={`text-sm transition-colors hover:text-ink ${
+                      isActive(item.match) ? 'text-ink underline decoration-signal decoration-2 underline-offset-8' : 'text-ink/60'
                     }`}
                   >
                     {item.name}
                   </Link>
-                );
-              })}
-            </nav>
-          </div>
-        )}
+                </li>
+              ))}
+              <li>
+                <Link
+                  href="/contact"
+                  aria-current={pathname.startsWith('/contact') ? 'page' : undefined}
+                  className="group inline-flex items-center gap-1 text-sm font-semibold text-ink"
+                >
+                  Contact
+                  <ArrowUpRight
+                    aria-hidden="true"
+                    className="w-3.5 h-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transition-none"
+                  />
+                </Link>
+              </li>
+            </ul>
+          </nav>
+
+          <button
+            ref={buttonRef}
+            type="button"
+            className="md:hidden -mr-2 p-2 text-ink"
+            onClick={() => setIsMenuOpen((open) => !open)}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+          >
+            <span aria-hidden="true" className="relative block w-6 h-3">
+              <span
+                className={`absolute left-0 w-6 h-px bg-ink transition-transform duration-200 motion-reduce:transition-none ${
+                  isMenuOpen ? 'top-1.5 rotate-45' : 'top-0'
+                }`}
+              />
+              <span
+                className={`absolute left-0 w-6 h-px bg-ink transition-transform duration-200 motion-reduce:transition-none ${
+                  isMenuOpen ? 'top-1.5 -rotate-45' : 'top-3'
+                }`}
+              />
+            </span>
+          </button>
+        </div>
       </div>
+
+      {isMenuOpen && (
+        <div
+          ref={menuRef}
+          id="mobile-menu"
+          className="md:hidden absolute top-full inset-x-0 bg-paper border-b border-subtle"
+        >
+          <nav aria-label="Primary" className="px-4 sm:px-6 py-4">
+            <ul className="divide-y divide-subtle">
+              {[...navItems, { name: 'Contact', href: '/contact', match: ['/contact'] }].map((item) => (
+                <li key={item.name}>
+                  <Link
+                    href={item.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    aria-current={isActive(item.match) ? 'page' : undefined}
+                    className="flex items-center justify-between py-4 text-lg text-ink"
+                  >
+                    {item.name}
+                    {isActive(item.match) && (
+                      <span aria-hidden="true" className="w-2 h-2 rounded-full bg-signal" />
+                    )}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      )}
     </header>
   );
 };
