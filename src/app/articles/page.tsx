@@ -26,7 +26,7 @@ export default async function ArticlesIndex({ searchParams }: { searchParams: Pr
     <main>
       <PageIntro
         eyebrow="Notes & writing"
-        title="Ideas worth writing down."
+        title="Things I’ve written."
         lede="Notes on debugging, architectural trade-offs, and the lessons hidden inside the work."
       >
         <FilterLinks basePath="/articles" options={categories} active={category} label="Filter by category" />

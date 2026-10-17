@@ -140,7 +140,7 @@ export const FeaturedWriting: React.FC<{ article: WritingSummary | null }> = ({ 
   return (
     <section aria-labelledby="writing-title" className="pb-16 md:pb-24">
       <Container>
-        <SectionIntro index="03" label="Notes & writing" title="Ideas worth writing down." id="writing-title" />
+        <SectionIntro index="03" label="Notes & writing" title="A few things I’ve written." id="writing-title" />
         <article className="bg-surface p-5 md:p-6 grid gap-3 md:grid-cols-[10rem_1fr] md:gap-6">
           <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted md:pt-6 md:leading-6">
             <p className="inline md:block">{article.category || 'Field notes'}</p>
