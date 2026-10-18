@@ -28,8 +28,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${manrope.variable} ${plexMono.variable} overflow-x-hidden`}>
-      <body className="min-h-screen flex flex-col bg-paper text-ink font-sans antialiased overflow-x-hidden">
+    <html lang="en" className={`${manrope.variable} ${plexMono.variable}`}>
+      <body className="min-h-screen flex flex-col bg-paper text-ink font-sans antialiased">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:bg-ink focus:text-paper focus:px-4 focus:py-2 font-mono text-xs uppercase tracking-widest"
