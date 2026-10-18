@@ -8,7 +8,8 @@ import { ArrowUpRight } from 'lucide-react';
 const navItems = [
   { name: 'Work', href: '/#work', match: ['/projects'] },
   { name: 'Lab', href: '/lab', match: ['/lab'] },
-  { name: 'Writing', href: '/articles', match: ['/articles', '/case-studies'] },
+  { name: 'Writing', href: '/articles', match: ['/articles'] },
+  { name: 'Case studies', href: '/case-studies', match: ['/case-studies'] },
   { name: 'About', href: '/about', match: ['/about'] },
 ];
 

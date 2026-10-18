@@ -152,6 +152,8 @@ export interface WritingSummary {
   title: string;
   slug: string;
   excerpt?: string;
+  /** Case studies only; searched but not displayed. */
+  subtitle?: string;
   category?: string;
   duration?: string;
   date?: string;

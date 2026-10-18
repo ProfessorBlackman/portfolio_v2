@@ -263,6 +263,7 @@ export class SanityService {
       title,
       "slug": slug.current,
       "excerpt": coalesce(seoDescription, subtitle),
+      subtitle,
       "category": "Case study",
       duration,
       date,
