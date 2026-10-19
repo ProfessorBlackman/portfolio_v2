@@ -7,7 +7,7 @@ interface Props {
 
 export function MarkdownBlock({ code }: Props) {
   return (
-    <div className="prose dark:prose-invert">
+    <div className="markdown-block my-6">
       <ReactMarkdown>{code}</ReactMarkdown>
     </div>
   );

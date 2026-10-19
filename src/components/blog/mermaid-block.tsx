@@ -22,18 +22,22 @@ export function MermaidBlock({ code }: { code: string }) {
     try {
       setError(null);
 
-      // Pick theme based on OS & Next.js theme attribute
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const isDark = document.documentElement.classList.contains("dark") || prefersDark;
-
       mermaid.initialize({
         startOnLoad: false,
         securityLevel: "loose",
-        theme: isDark ? "dark" : "default",
+        theme: "base",
         themeVariables: {
-          fontSize: "16px",
-          lineColor: isDark ? "#b4b4b4" : "#333",
-          primaryColor: isDark ? "#1e1e1e" : "#fff",
+          fontSize: "15px",
+          fontFamily: "var(--font-manrope), sans-serif",
+          background: "#ffffff",
+          primaryColor: "#f5f3ee",
+          primaryBorderColor: "#20211f",
+          primaryTextColor: "#20211f",
+          secondaryColor: "#e9e7e0",
+          tertiaryColor: "#ffffff",
+          lineColor: "#85847d",
+          noteBkgColor: "#b9e36a",
+          noteBorderColor: "#4f6f1f",
         },
       });
 
@@ -166,8 +170,8 @@ export function MermaidBlock({ code }: { code: string }) {
     left: fullscreen ? 0 : undefined,
     width: fullscreen ? "100vw" : "100%",
     height: fullscreen ? "100vh" : "auto",
-    background: fullscreen ? "var(--translucent-background)" : "transparent",
-    padding: fullscreen ? "2rem" : "0",
+    background: fullscreen ? "var(--color-paper)" : "var(--color-surface)",
+    padding: fullscreen ? "3rem 2rem 2rem" : "3rem 1rem 1rem",
     zIndex: fullscreen ? 9999 : "auto",
     overflow: "auto",
     transition: "all 0.3s ease-in-out",
@@ -181,40 +185,47 @@ export function MermaidBlock({ code }: { code: string }) {
   };
 
   return (
-    <div ref={wrapperRef} style={wrapperStyle} className="rounded-lg shadow relative border border-neutral-300 dark:border-neutral-700">
+    <div ref={wrapperRef} style={wrapperStyle} className="my-8">
       {/* Toolbar */}
-      <div className="absolute right-3 top-3 flex gap-2 z-10">
+      <div className="absolute right-2 top-2 flex gap-1 z-10">
         <button
+          type="button"
           onClick={copySource}
-          className="px-2 py-1 rounded bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 shadow text-sm"
+          className="font-mono text-[10px] uppercase tracking-[0.12em] px-2 py-1 text-ink/60 hover:text-ink hover:bg-wash transition-colors"
         >
           Copy
         </button>
 
         <button
+          type="button"
           onClick={zoomOut}
-          className="px-2 py-1 rounded bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 shadow text-sm"
+          className="font-mono text-[10px] uppercase tracking-[0.12em] px-2 py-1 text-ink/60 hover:text-ink hover:bg-wash transition-colors"
+          aria-label="Zoom out"
         >
           -
         </button>
 
         <button
+          type="button"
           onClick={zoomIn}
-          className="px-2 py-1 rounded bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 shadow text-sm"
+          className="font-mono text-[10px] uppercase tracking-[0.12em] px-2 py-1 text-ink/60 hover:text-ink hover:bg-wash transition-colors"
+          aria-label="Zoom in"
         >
           +
         </button>
 
         <button
+          type="button"
           onClick={resetZoom}
-          className="px-2 py-1 rounded bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 shadow text-sm"
+          className="font-mono text-[10px] uppercase tracking-[0.12em] px-2 py-1 text-ink/60 hover:text-ink hover:bg-wash transition-colors"
         >
           Reset
         </button>
 
         <button
+          type="button"
           onClick={toggleFullscreen}
-          className="px-2 py-1 rounded bg-white border-[1px] border-neutral-300 dark:bg-neutral-800 dark:text-white text-black shadow text-sm"
+          className="font-mono text-[10px] uppercase tracking-[0.12em] px-2 py-1 text-ink/60 hover:text-ink hover:bg-wash transition-colors"
         >
           {fullscreen ? "Exit Fullscreen" : "Fullscreen"}
         </button>
@@ -227,7 +238,7 @@ export function MermaidBlock({ code }: { code: string }) {
 
       {/* Error Display */}
       {error && (
-        <div className="text-red-600 dark:text-red-400 mt-3 p-3 text-sm border border-red-400 rounded">
+        <div className="mt-3 p-3 text-sm bg-wash text-ink/80">
           {error}
           <pre className="whitespace-pre-wrap mt-2">{code}</pre>
         </div>

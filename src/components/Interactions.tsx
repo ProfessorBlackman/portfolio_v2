@@ -9,6 +9,7 @@ import {
   updateReaction,
   addComment,
   formatCommentDate,
+  incrementViews,
   type Comment as FirebaseComment,
 } from '@/lib/firebase/interactions';
 
@@ -32,6 +33,9 @@ export const Interactions: React.FC<{ contentId: string }> = ({ contentId }) => 
     // Get or generate user ID
     const id = getUserId();
     setUserId(id);
+
+    // Views used to be counted on listing clicks; count them where the content is read instead.
+    incrementViews(contentId).catch((error) => console.error('Failed to record view:', error));
 
     // Subscribe to real-time interaction updates
     const unsubscribeInteractions = subscribeToInteractions(contentId, (data) => {
@@ -135,57 +139,58 @@ export const Interactions: React.FC<{ contentId: string }> = ({ contentId }) => 
     }
   };
 
+  const reactionClass = (selected: boolean) =>
+    `inline-flex items-center gap-2 px-3 py-2 font-mono text-[11px] uppercase tracking-[0.12em] border transition-colors ${
+      selected ? 'bg-ink text-paper border-ink' : 'border-subtle text-ink/70 hover:border-ink hover:text-ink'
+    }`;
+
   return (
-    <div className="space-y-16 border-t border-woodblock pt-16">
-      {/* Reactions */}
-      <div className="flex items-center gap-12">
-        <div className="flex items-center gap-6">
-          <button 
-            onClick={handleLike}
-            className={`flex items-center gap-3 px-6 py-3 border-2 transition-all ${userReaction === 'like' ? 'bg-cinnabar border-cinnabar text-washi' : 'border-woodblock text-washi/40 hover:text-cinnabar'}`}
-          >
-            <span className="text-xl">▲</span>
-            <span className="font-black text-xs tracking-generous">{likes} LIKES</span>
-          </button>
-          <button 
-            onClick={handleDislike}
-            className={`flex items-center gap-3 px-6 py-3 border-2 transition-all ${userReaction === 'dislike' ? 'bg-woodblock border-woodblock text-cinnabar' : 'border-woodblock text-washi/40 hover:text-cinnabar'}`}
-          >
-            <span className="text-xl">▼</span>
-            <span className="font-black text-xs tracking-generous">{dislikes} DISLIKES</span>
-          </button>
-        </div>
-        <p className="text-xs uppercase tracking-generous hidden lg:block text-washi/20 italic">Share your thoughts below</p>
+    <div className="space-y-10">
+      <div className="flex flex-wrap items-center gap-3">
+        <p className="mr-2 text-[15px] text-ink/70">Was this useful?</p>
+        <button type="button" onClick={handleLike} aria-pressed={userReaction === 'like'} className={reactionClass(userReaction === 'like')}>
+          <span aria-hidden="true">▲</span> Useful <span className="opacity-70">{likes}</span>
+        </button>
+        <button type="button" onClick={handleDislike} aria-pressed={userReaction === 'dislike'} className={reactionClass(userReaction === 'dislike')}>
+          <span aria-hidden="true">▼</span> Not really <span className="opacity-70">{dislikes}</span>
+        </button>
       </div>
 
-      {/* Comments */}
-      <div className="space-y-12">
-        <h3 className="text-2xl font-black text-washi tracking-tighter uppercase">Discussion ({comments.length})</h3>
-        
-        <form onSubmit={submitComment} className="space-y-6">
+      <div className="space-y-6">
+        <form onSubmit={submitComment} className="space-y-3">
+          <label htmlFor={`comment-${contentId}`} className="block font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
+            Leave a comment ({comments.length} so far)
+          </label>
           <textarea
+            id={`comment-${contentId}`}
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            placeholder="LEAVE A COMMENT..."
-            className="w-full bg-woodblock/10 border-2 border-woodblock/40 p-6 text-xl text-washi focus:border-cinnabar outline-none transition-all placeholder:text-washi/10 rounded-sm"
+            placeholder="Questions, corrections, or a different take…"
+            className="w-full bg-surface border border-subtle p-4 text-[15px] leading-relaxed text-ink placeholder:text-muted focus:border-ink focus:outline-none transition-colors"
             rows={3}
           />
-          <button type="submit" className="px-10 py-4 bg-cinnabar text-washi font-bold uppercase tracking-generous text-xs hover:-translate-y-0.5 transition-all">
-            POST COMMENT
+          <button
+            type="submit"
+            disabled={isSubmitting || !newComment.trim()}
+            className="px-5 py-2.5 bg-ink text-paper text-sm font-medium hover:bg-ink/85 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            {isSubmitting ? 'Posting…' : 'Post comment'}
           </button>
         </form>
 
-        <div className="space-y-8">
-          {comments.map((comment) => (
-            <div key={comment.id} className="bg-woodblock/5 border-l-2 border-woodblock p-8 space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-xs font-bold text-cinnabar tracking-generous uppercase">{comment.author}</span>
-                <span className="text-[10px] text-washi/20 font-mono uppercase">{comment.date}</span>
-              </div>
-              <p className="text-lg text-washi/70 leading-relaxed italic">&ldquo;{comment.text}&rdquo;</p>
-            </div>
-          ))}
-        </div>
+        {comments.length > 0 && (
+          <ul className="divide-y divide-subtle border-t border-subtle">
+            {comments.map((comment) => (
+              <li key={comment.id} className="py-5">
+                <p className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
+                  <span className="text-ink/70">{comment.author}</span>
+                  <span>{comment.date}</span>
+                </p>
+                <p className="mt-2 text-[15px] leading-relaxed text-ink/85 whitespace-pre-line">{comment.text}</p>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

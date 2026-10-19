@@ -20,6 +20,10 @@ export interface Project {
   title: string;
   description?: string;
   details?: string;
+  fullDescription?: string;
+  githubLink?: string;
+  liveLink?: string;
+  technologies?: string[];
   image?: string;
   tags?: string[];
   githubUrl?: string;
@@ -139,4 +143,31 @@ export interface Education {
   type: 'education' | 'certification';
   certificateUrl?: string;
   description?: string;
+}
+
+/** Lightweight article/case-study fields for listings and "next" links. */
+export interface WritingSummary {
+  _id: string;
+  _type: 'post' | 'article' | 'caseStudy';
+  title: string;
+  slug: string;
+  excerpt?: string;
+  /** Case studies only; searched but not displayed. */
+  subtitle?: string;
+  category?: string;
+  duration?: string;
+  date?: string;
+  tags?: string[];
+}
+
+export interface LabItem {
+  _id: string;
+  title: string;
+  slug?: string;
+  status: 'exploring' | 'prototype' | 'shipped' | 'paused' | 'abandoned';
+  summary?: string;
+  tags?: string[];
+  link?: string;
+  repo?: string;
+  date?: string;
 }

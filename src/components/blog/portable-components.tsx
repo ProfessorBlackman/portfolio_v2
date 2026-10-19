@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {PortableTextReactComponents} from "next-sanity"
 import Image from "next/image"
 import {MermaidBlock} from "@/components/blog/mermaid-block";
@@ -9,19 +10,29 @@ import {urlFor} from "@/lib/sanity/lib/client";
 import {MarkdownBlock} from "@/components/blog/markdown-block";
 import {CsvRowData} from "@/lib/types";
 import {CsvTableWithHeader} from "@/components/blog/csv-table";
+import {blockText, slugify} from "@/lib/text";
+
+const headingId = (value: any) => slugify(blockText(value));
 
 export const PortableComponents: Partial<PortableTextReactComponents> = {
     types: {
         image: ({value}: { value: any }) => {
+            const caption = value.caption || value.alt;
             return (
-                <div className="relative w-full h-96 my-8">
-                    <Image
-                        className="object-cover object-center"
-                        src={urlFor(value).url()}
-                        alt={value.alt || "Blog Post Image"}
-                        fill
-                    />
-                </div>
+                <figure className="my-8">
+                    <div className="relative w-full aspect-[16/10] bg-wash">
+                        <Image
+                            className="object-contain"
+                            src={urlFor(value).width(1600).url()}
+                            alt={value.alt || ""}
+                            fill
+                            sizes="(min-width: 1024px) 46rem, 100vw"
+                        />
+                    </div>
+                    {caption && (
+                        <figcaption className="mt-2 text-[13px] leading-relaxed text-muted">{caption}</figcaption>
+                    )}
+                </figure>
             )
         },
         table: ({value}) => <TableRenderer value={value}/>,
@@ -41,54 +52,50 @@ export const PortableComponents: Partial<PortableTextReactComponents> = {
         },
     },
     block: {
-        h1: ({children, value}: { children?: React.ReactNode, value: any }) => {
-            const id = value.children?.[0]?.text?.toLowerCase().replace(/\s+/g, '-') || '';
-            return <h1 id={id} className="text-4xl font-bold my-6 scroll-mt-32">{children}</h1>;
-        },
-        h2: ({children, value}: { children?: React.ReactNode, value: any }) => {
-            const id = value.children?.[0]?.text?.toLowerCase().replace(/\s+/g, '-') || '';
-            return <h2 id={id} className="text-3xl font-bold my-5 scroll-mt-32">{children}</h2>;
-        },
-        h3: ({children, value}: { children?: React.ReactNode, value: any }) => {
-            const id = value.children?.[0]?.text?.toLowerCase().replace(/\s+/g, '-') || '';
-            return <h3 id={id} className="text-2xl font-bold my-4 scroll-mt-32">{children}</h3>;
-        },
-        h4: ({children, value}: { children?: React.ReactNode, value: any }) => {
-            const id = value.children?.[0]?.text?.toLowerCase().replace(/\s+/g, '-') || '';
-            return <h4 id={id} className="text-xl font-bold my-3 scroll-mt-32">{children}</h4>;
-        },
-        blockquote: ({children}: { children?: React.ReactNode }) => (
-            <blockquote className="border-l-4 border-gray-400 pl-4 my-6 italic">
+        normal: ({children}) => <p className="my-5">{children}</p>,
+        // h1/h2 inside a body sit below the section title, so they render one step smaller.
+        h1: ({children, value}) => (
+            <h3 id={headingId(value)} className="mt-10 mb-3 text-[1.35rem] leading-snug font-medium tracking-[-0.01em] text-ink scroll-mt-24">{children}</h3>
+        ),
+        h2: ({children, value}) => (
+            <h3 id={headingId(value)} className="mt-10 mb-3 text-[1.35rem] leading-snug font-medium tracking-[-0.01em] text-ink scroll-mt-24">{children}</h3>
+        ),
+        h3: ({children, value}) => (
+            <h3 id={headingId(value)} className="mt-8 mb-2 text-[1.2rem] leading-snug font-medium text-ink scroll-mt-24">{children}</h3>
+        ),
+        h4: ({children, value}) => (
+            <h4 id={headingId(value)} className="mt-6 mb-2 text-base font-semibold text-ink scroll-mt-24">{children}</h4>
+        ),
+        blockquote: ({children}) => (
+            <blockquote className="my-8 border-l-2 border-signal pl-5 md:pl-6 text-[1.2rem] md:text-[1.35rem] leading-snug font-medium tracking-[-0.01em] text-ink">
                 {children}
             </blockquote>
         ),
     },
     list: {
-        bullet: ({children}: { children?: React.ReactNode }) => (
-            <ul className="list-disc list-inside my-6">{children}</ul>
+        bullet: ({children}) => (
+            <ul className="my-5 space-y-2 pl-5 list-disc marker:text-muted">{children}</ul>
         ),
-        number: ({children}: { children?: React.ReactNode }) => (
-            <ol className="list-decimal list-inside my-6">{children}</ol>
+        number: ({children}) => (
+            <ol className="my-5 space-y-2 pl-5 list-decimal marker:font-mono marker:text-[0.85em] marker:text-muted">{children}</ol>
         ),
     },
     listItem: {
-        bullet: ({children}: { children?: React.ReactNode }) => (
-            <li className="mb-2">{children}</li>
-        ),
-        number: ({children}: { children?: React.ReactNode }) => (
-            <li className="mb-2">{children}</li>
-        ),
+        bullet: ({children}) => <li className="pl-1">{children}</li>,
+        number: ({children}) => <li className="pl-1">{children}</li>,
     },
     marks: {
+        code: ({children}) => (
+            <code className="font-mono text-[0.88em] bg-wash px-1.5 py-0.5">{children}</code>
+        ),
         link: ({children, value}: { children?: React.ReactNode; value?: { href: string } }) => {
-            const rel = !value?.href.startsWith('/') ? 'noreferrer noopener' : undefined;
-            const target = !value?.href.startsWith('/') ? '_blank' : undefined;
+            const external = !value?.href?.startsWith('/') && !value?.href?.startsWith('#');
             return (
                 <a
                     href={value?.href}
-                    rel={rel}
-                    target={target}
-                    className="text-cinnabar underline hover:text-cinnabar/80 transition-colors font-medium"
+                    rel={external ? 'noreferrer noopener' : undefined}
+                    target={external ? '_blank' : undefined}
+                    className="text-ink underline decoration-signal decoration-2 underline-offset-[3px] hover:decoration-signal-ink transition-colors"
                 >
                     {children}
                 </a>

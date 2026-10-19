@@ -1,9 +1,5 @@
 "use client";
 
-/* --------------------------------------------- */
-/* Copy Button Component */
-/* --------------------------------------------- */
-
 import {useState} from "react";
 
 export function CopyButton({ code }: { code: string }) {
@@ -17,10 +13,11 @@ export function CopyButton({ code }: { code: string }) {
 
   return (
     <button
+      type="button"
       onClick={copy}
-      className="px-2 py-1 text-xs rounded bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600"
+      className="font-mono text-[10px] uppercase tracking-[0.14em] px-2 py-1 text-paper/60 hover:text-signal transition-colors"
     >
-      {copied ? "Copied!" : "Copy"}
+      <span aria-live="polite">{copied ? "Copied" : "Copy"}</span>
     </button>
   );
 }
