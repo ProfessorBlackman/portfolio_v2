@@ -3,8 +3,9 @@ import Image from 'next/image';
 import { Project } from '@/lib/types';
 
 /*
- * Coded product previews from the design. Each is keyed by a normalised project
- * title; any project without one falls back to its Sanity image.
+ * Coded product previews from the design, keyed by a normalised project title.
+ * The project's own Sanity image always wins; these only fill in for projects
+ * that have no image uploaded.
  */
 
 const Panel: React.FC<{ children: React.ReactNode; tone: 'wash' | 'cool' | 'dark' }> = ({ children, tone }) => (
@@ -120,18 +121,19 @@ export const ProjectPreview: React.FC<{ project: Project }> = ({ project }) => {
 
   return (
     <div aria-hidden="true" className="relative aspect-[16/10] sm:aspect-[2/1] w-full">
-      {Preview ? (
-        <Preview />
-      ) : project.image ? (
+      {project.image ? (
         <div className="relative h-full w-full bg-wash">
           <Image
             src={project.image}
             alt=""
             fill
             sizes="(min-width: 768px) 45vw, 100vw"
-            className="object-cover"
+            // Project images are mostly site screenshots; keep their header in frame.
+            className="object-cover object-top"
           />
         </div>
+      ) : Preview ? (
+        <Preview />
       ) : (
         <Panel tone="wash">
           <Label>{project.category || 'Project'}</Label>
